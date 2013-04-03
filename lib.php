@@ -31,7 +31,7 @@ function run($program, $input, $limit = -1) {
     if($limit == -1){
         $execString = $program;
     }else{
-        $execString = "/var/www/mark/test.sh '$program' $limit";
+        $execString = getcwd() ."/timeout_runner.sh '$program' $limit";
     }
     $process = proc_open($execString, $descriptorspec, $pipes);
     if (!is_resource($process)) {
