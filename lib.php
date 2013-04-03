@@ -87,7 +87,6 @@ function killprocess($process) {
         $pids = preg_split('/\s+/', `ps -o pid --no-heading --ppid $ppid`);
         foreach ($pids as $pid) {
             if (is_numeric($pid)) {
-                echo "Killing $pid\n";
                 posix_kill($pid, 9); //9 is the SIGKILL signal
             }
         }
@@ -108,7 +107,6 @@ function run($path, $program, $input, $limit = -1) {
     } else {
         $execString = getcwd() . "/timeout_runner.sh '$path' '$program' $limit";
     }
-    echo $execString;
     $process = proc_open($execString, $descriptorspec, $pipes);
     if (!is_resource($process)) {
         throw new Exception('bad_program could not be started.');
@@ -153,12 +151,10 @@ function run($path, $program, $input, $limit = -1) {
 function mark($language, $sourcecode, $input, $output, $timelimit) {
     $string = file_get_contents("languages.json");
     $languages = json_decode($string, true);
-    var_dump($languages);
 
     $lang = $languages[$language];
     $code = new program_file($lang, $sourcecode, $input);
 
-    var_dump($code);
     foreach ($code->commands as $key => $command) {
         if ($key == "run") {
             $outputs = run($code->path, $command, $input, $timelimit);
@@ -172,15 +168,17 @@ function mark($language, $sourcecode, $input, $output, $timelimit) {
             }
         }
     }
-    var_dump($key);
-    var_dump($outputs);
+
     if ($key == "run") {
         if ($outputs["stderr"] == "Time limit exceeded") {
-            return result_time_limit;
+            $outputs["result"] = result_time_limit;
+        }else{
+            $outputs["result"] = test_output($output, $outputs['stdout']);
         }
-        return test_output($output, $outputs['stdout']);
+    }else{
+        $outputs["result"] = result_compile_error;
     }
-    return result_compile_error;
+    return $outputs;
 }
 
 function test_output($correct, $progoutput) {
@@ -189,11 +187,11 @@ function test_output($correct, $progoutput) {
     }
 
     $correct = strtolower($correct);
-    $progoutput = strtolower($progoutput);
     $correct = str_replace(" ", "", $correct);
     $correct = str_replace("\t", "", $correct);
     $correct = str_replace("\n", "", $correct);
-
+    
+    $progoutput = strtolower($progoutput);
     $progoutput = str_replace(" ", "", $progoutput);
     $progoutput = str_replace("\t", "", $progoutput);
     $progoutput = str_replace("\n", "", $progoutput);
