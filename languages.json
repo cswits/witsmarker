@@ -1,0 +1,64 @@
+{
+    "_comment": "~sourcefile~ refers to the sourcefilename excluding its path",
+    "1": {
+        "name": "JavaJar",
+        "extension": "jar",
+        "commands": {
+            "run": "java -Djava.security.manager -jar ~sourcefile~"
+        }
+    },
+    "2": {
+        "name": "JavaZip",
+        "extension": "zip",
+        "commands": {
+            "unzip": "unzip ~sourcefile~",
+            "compile": "javac Program.java",
+            "run": "java -Djava.security.manager Program"
+        }
+    },
+    "3": {
+        "name": "Jython",
+        "extension": "py",
+        "commands": {
+            "unzip": "unzip ~sourcefile~",
+            "compile": "javac Program.java",
+            "run": "jython -Djava.security.manager ~sourcefile~"
+        }
+    },
+    "4": {
+        "name": "Python",
+        "extension": "py",
+        "commands": {
+            "run": "python ~sourcefile~"
+        }
+    },
+    "5": {
+        "name": "C",
+        "extension": "c",
+        "commands": {
+            "compile": "gcc -o ~sourcefile_noex~.out ~sourcefile~ -lm",
+            "run": "./~sourcefile_noex~.out"
+        },
+        "tests": {
+            "compile": "~sourcefile_noex~.out"
+        }
+    },
+    "6": {
+        "name": "C++",
+        "extension": "cpp",
+        "commands": {
+            "compile": "g++ -o ~sourcefile_noex~.out ~sourcefile~ -lm",
+            "run": "./~sourcefile_noex~.out"
+        },
+        "tests": {
+            "compile": "~sourcefile_noex~.out"
+        }
+    },
+    "7": {
+        "name": "Octave",
+        "extension": "m",
+        "commands": {
+            "run": "octave ~input~ ~sourcefile~"
+        }
+    }
+}

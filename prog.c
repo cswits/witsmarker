@@ -4,7 +4,7 @@ int main(){
     int n;
 
     scanf("%d", &n);
-    sleep(20);
+//    sleep(20);
     printf("Hello %d\n",n);
 
 }
