@@ -8,6 +8,29 @@ require_once("config.php");
         const result_presentation_error = 7;
         const result_time_limit = 10;
 
+//Delete folder function
+function deleteDirectory($dir) {
+    // If the folder/file doesn't exist return
+    if (!file_exists($dir))
+        return true;
+    // If it isn't a directory, remove and return
+    if (!is_dir($dir) || is_link($dir))
+        return unlink($dir);
+    // For each item in the directory
+    foreach (scandir($dir) as $item) {
+        // Ignore special folders
+        if ($item == '.' || $item == '..')
+            continue;
+        // Recursively delete items in the folder
+        if (!deleteDirectory($dir . "/" . $item)) {
+            //chmod($dir . "/" . $item, 0777);
+            if (!deleteDirectory($dir . "/" . $item))
+                return false;
+        };
+    }
+    return rmdir($dir);
+}
+
 /**
  * Object representing a source code file.
  */
@@ -18,32 +41,26 @@ class program_file {
     public $extension;  ///< Extension, based on the language
     public $fullname;   ///< Absolute Path and Filename
     public $sourcefile; ///< Replaces sourcefile in commands
-    public $id;         ///< Submission ID from Database
+    public $id;         ///< Submission ID
     public $commands;   ///< Commands with Keywords Replaced
     public $tests;       ///< Tests with Keywords Replaced    
 
     /**
      * Constructor
-     * @global mysqli $data Connection to the Database
      * @param type $lang Array containing information about the Language
      * @param string $sourcecode All the sourcecode to be written to the file
      */
 
     function program_file($lang, $sourcecode, $input = "") {
-        global $data;
-
         // Get filename extension from $lang
         $this->extension = $lang['extension'];
         // All files are called source
         $this->filename = "source";
         $this->sourcefile = "$this->filename.$this->extension";
 
-        // Create a submission in the database
-        $query = $data->prepare("INSERT INTO submissions (status) VALUES (0)");
-        $query->execute();
-
         // Get the Submission ID
-        $this->id = $query->insert_id;
+        $this->id = uniqid("", $more_entropy = true);
+
         // Construct the path
         $this->path = settings::$temp;
         $this->path = "$this->path/$this->extension/$this->id";
@@ -54,7 +71,7 @@ class program_file {
         mkdir($this->path, 0777, $recursive = true);
         // Save the code
         file_put_contents($this->fullname, $sourcecode);
-        file_put_contents($this->path."/input", $input);
+        file_put_contents($this->path . "/input", $input);
 
         // setup commands
         $this->commands = $this->setup_commands($lang['commands']);
@@ -71,6 +88,12 @@ class program_file {
             $temp[$key] = $value;
         }
         return $temp;
+    }
+
+    function __destruct() {
+        if (!settings::$keep_files) {
+            deleteDirectory($this->path);
+        }
     }
 
 }
@@ -172,10 +195,10 @@ function mark($language, $sourcecode, $input, $output, $timelimit) {
     if ($key == "run") {
         if ($outputs["stderr"] == "Time limit exceeded") {
             $outputs["result"] = result_time_limit;
-        }else{
+        } else {
             $outputs["result"] = test_output($output, $outputs['stdout']);
         }
-    }else{
+    } else {
         $outputs["result"] = result_compile_error;
     }
     return $outputs;
@@ -190,7 +213,7 @@ function test_output($correct, $progoutput) {
     $correct = str_replace(" ", "", $correct);
     $correct = str_replace("\t", "", $correct);
     $correct = str_replace("\n", "", $correct);
-    
+
     $progoutput = strtolower($progoutput);
     $progoutput = str_replace(" ", "", $progoutput);
     $progoutput = str_replace("\t", "", $progoutput);

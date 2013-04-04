@@ -6,18 +6,11 @@
 class settings {
 
     public static $temp;
+    public static $keep_files;
 
 }
 
 settings::$temp = "/tmp/marker";
+settings::$keep_files = false;
 
-$user = "root";
-$pass = "ipo123";
-$host = "127.0.0.1";
-$name = "marker";
-
-$data = new mysqli($host, $user, $pass, $name);
-if ($data->connect_errno) {
-    echo "Failed to connect to MySQL: " . $data->connect_error;
-}
 ?>
