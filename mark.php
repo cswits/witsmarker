@@ -1,25 +1,21 @@
 <?php
-require_once("config.php");
-require_once("lib.php");
 
-$inputJSON = file_get_contents('php://input');
-$input= json_decode( $inputJSON, TRUE );
+/**
+ * @file mark.php
+ * Web service interface.
+ */
+require_once("config.php"); // Include Global Configuration
+require_once("lib.php");    // Include Library Functions
 
-$source =  base64_decode($input['source']);
-//echo json_encode($source);
+$inputJSON = file_get_contents('php://input');  // Get input from the client
+$input = json_decode($inputJSON, TRUE);        // Decode the JSON object
 
-
-$val = mark($input['language'], $source, 
+$source = base64_decode($input['source']);     // Decode the Base64
+// Mark the submission
+// This returns the stderr, stdout and result
+$val = mark($input['language'], $source,
         $input['input'], $input['output'], $input["timelimit"]);
 
+// Return the resulting json object to the client
 echo json_encode($val);
-
-/* $outputs = run("/var/www/mark",'gcc -o myProgram prog.c', '');
-  var_dump($outputs);
-
-  $outputs = run('/var/www/mark','./myProgram', '5', 10);
-  var_dump($outputs);
- */
-
-
 ?>

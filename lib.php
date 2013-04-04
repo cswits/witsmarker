@@ -1,14 +1,23 @@
 <?php
 
+/**
+ * @file lib.php
+ * General library routines.
+ */
+// Include global configurations
 require_once("config.php");
 
-        const result_correct = 1;
-        const result_incorrect = 11;
-        const result_compile_error = 3;
-        const result_presentation_error = 7;
-        const result_time_limit = 10;
+        const result_correct = 1;           ///< Correct Submission
+        const result_incorrect = 11;        ///< Incorrect Submission
+        const result_compile_error = 3;     ///< Compile Error
+        const result_presentation_error = 7; ///< Presentation Error
+        const result_time_limit = 10;       ///< Exceeded Time Limit
 
-//Delete folder function
+/**
+ * Recursively delete a directory
+ * @param string $dir Directory to Delete
+ * @return boolean Success/Failure
+ */
 function deleteDirectory($dir) {
     // If the folder/file doesn't exist return
     if (!file_exists($dir))
@@ -47,8 +56,9 @@ class program_file {
 
     /**
      * Constructor
-     * @param type $lang Array containing information about the Language
+     * @param array $lang Array containing information about the Language
      * @param string $sourcecode All the sourcecode to be written to the file
+     * @param string $input Optional Input data to be written to file
      */
 
     function program_file($lang, $sourcecode, $input = "") {
@@ -78,6 +88,12 @@ class program_file {
         $this->tests = $this->setup_commands($lang['tests']);
     }
 
+    /**
+     * Iterates through commands from the language description and replaces 
+     * keywords with the relevant paths
+     * @param array $comm Array of commands
+     * @return Array of commands with keywords replaced
+     */
     function setup_commands($comm) {
         $temp = $comm;
         foreach ($temp as $key => $value) {
@@ -90,6 +106,10 @@ class program_file {
         return $temp;
     }
 
+    /**
+     * Destructor deletes the relevant directory unless settings::$keep_files is
+     * set to true.
+     */
     function __destruct() {
         if (!settings::$keep_files) {
             deleteDirectory($this->path);
@@ -98,6 +118,14 @@ class program_file {
 
 }
 
+/**
+ * Kill a process and all of its children. 
+ * TODO: This function needs some testing with regards to programs
+ * with threads and/or forks.
+ * Is this code necessary if the bash script killer runs?
+ * @param int $process PID of the process to kill
+ * @return int exit code of the process
+ */
 function killprocess($process) {
     $status = proc_get_status($process);
     if ($status['running'] == true) { //process ran too long, kill it
@@ -118,6 +146,16 @@ function killprocess($process) {
     }
 }
 
+/**
+ * Runs a program with a timelimit and input.
+ * @param string $path  Working directory of the program. 
+ *      The system cd's to this path before running the program.
+ * @param type $program The program within $path that should execute
+ * @param type $input   Input to the program on stdin
+ * @param type $limit   Optional Time limit in seconds
+ * @return Array containing stdout, stderr and exit code (result).
+ * @throws Exception if the program cannot be started.
+ */
 function run($path, $program, $input, $limit = -1) {
     $descriptorspec = array(
         0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
@@ -171,6 +209,16 @@ function run($path, $program, $input, $limit = -1) {
     return array('stdout' => $output, 'stderr' => $stderr, "result" => $res);
 }
 
+/**
+ * The main marking function. This is called from the webservice, saves the
+ * source code, runs the commands and checks the output.
+ * @param int $language    Language ID found in the languages.json file.
+ * @param string $sourcecode  The source code/binary the program.
+ * @param string $input   Input to the program on STDIN and the input file.
+ * @param string $output  The expected output of the program on STDOUT.
+ * @param int $timelimit   Time limit for the "run" command.
+ * @return string array containing STDERR, STDOUT and the result.
+ */
 function mark($language, $sourcecode, $input, $output, $timelimit) {
     $string = file_get_contents("languages.json");
     $languages = json_decode($string, true);
@@ -204,6 +252,13 @@ function mark($language, $sourcecode, $input, $output, $timelimit) {
     return $outputs;
 }
 
+/**
+ * Compare ideal and program outputs. Checks for an exact match 
+ * then for presentation errors.
+ * @param string $correct Ideal output.
+ * @param string $progoutput Program output.
+ * @return int result code.
+ */
 function test_output($correct, $progoutput) {
     if ($correct == $progoutput) {
         return result_correct;
