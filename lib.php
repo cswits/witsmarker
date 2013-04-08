@@ -146,6 +146,10 @@ function killprocess($process) {
     }
 }
 
+function mark_log($text){
+    file_put_contents(settings::$temp."/log.txt", $text);
+}
+
 /**
  * Runs a program with a timelimit and input.
  * @param string $path  Working directory of the program. 
@@ -260,6 +264,8 @@ function mark($language, $sourcecode, $input, $output, $timelimit) {
  * @return int result code.
  */
 function test_output($correct, $progoutput) {
+    $correct = trim($correct);
+    $progoutput = trim($progoutput);
     if ($correct == $progoutput) {
         return result_correct;
     }
