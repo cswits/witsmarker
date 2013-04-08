@@ -10,8 +10,18 @@ cd $1
 $2 <&0 >&1 2>&2 &
 # Get the PID of the last program
 i=$!
+count=0
+ps aux | grep $i | grep -v grep >/dev/null
+running=$?
+while [ "$running" -eq "0" ] && [ "$count" -lt "$3" ]
+do
+    ps aux | grep $i | grep -v grep >/dev/null
+    running=$?
+    let "count=count+1"
+    sleep 1
+done
 # Arg 3 - the amount of time in sec to wait before killing the program
-sleep $3
+
 # Try kill the program, if kill is successful, echo that it was running
 # TODO: Make sure that the PID isn't reused!!!
 kill $i 2>/dev/null && echo -n "Time limit exceeded" >&2
