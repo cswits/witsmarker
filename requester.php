@@ -11,6 +11,8 @@ $source=<<<EOF
         #include <stdio.h>
         int main(){
             printf("Hello");
+            fprintf(stderr, "Hello _ err");
+            sleep(10);
          }
 EOF;
 // Always base64_encode the source

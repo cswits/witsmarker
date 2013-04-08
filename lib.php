@@ -245,7 +245,7 @@ function mark($language, $sourcecode, $input, $output, $timelimit) {
     }
 
     if ($key == "run") {
-        if ($outputs["stderr"] == "Time limit exceeded") {
+        if(strpos($outputs["stderr"], 'Time limit exceeded') != FALSE){
             $outputs["result"] = result_time_limit;
         } else {
             $outputs["result"] = test_output($output, $outputs['stdout']);
