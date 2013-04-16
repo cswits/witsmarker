@@ -1,5 +1,4 @@
 {
-    "_comment": "~sourcefile~ refers to the sourcefilename excluding its path",
     "1": {
         "name": "JavaJar",
         "extension": "jar",
@@ -59,6 +58,30 @@
         "extension": "m",
         "commands": {
             "run": "octave ~input~ ~sourcefile~"
+        }
+    },
+    "8": {
+        "name": "JavaZip_Custom",
+        "extension": "zip",
+        "commands": {
+            "unzip": "unzip ~sourcefile~",
+            "rename": "mv ~input~ Test.java",
+            "compile": "javac Test.java",
+            "run": "java -Djava.security.manager Test"
+        }
+    },
+    "9": {
+        "name": "C_Custom",
+        "extension": "c",
+        "commands": {
+            "rm_imain" : "sed -i 's:int\\s*main\\s*(:int old_main(:g' ~sourcefile~",
+            "rm_vmain" : "sed -i 's:void\\s*main\\s*(:void old_main(:g' ~sourcefile~",
+            "concat": "cat ~sourcefile~ `echo` ~input~  > combined.c",
+            "compile": "gcc -o combined combined.c -lm",
+            "run": "./combined"
+        },
+        "tests": {
+            "compile": "combined"
         }
     }
 }

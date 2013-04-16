@@ -20,5 +20,5 @@ class settings {
 }
 
 settings::$temp = "/tmp/marker";
-settings::$keep_files = false;
+settings::$keep_files = true;
 ?>
