@@ -20,8 +20,6 @@
         "name": "Jython",
         "extension": "py",
         "commands": {
-            "unzip": "unzip ~sourcefile~",
-            "compile": "javac Program.java",
             "run": "jython -Djava.security.manager ~sourcefile~"
         }
     },
