@@ -68,7 +68,7 @@
             "run": "java -Djava.security.manager Test"
         }
     },
-    "9": {
+"9": {
         "name": "C_Custom",
         "extension": "c",
         "commands": {
@@ -81,5 +81,17 @@
         "tests": {
             "compile": "combined"
         }
+    },
+"10": {
+        "name": "matlab",
+        "extension": "m",
+        "commands": {
+            "makeTester" : "printf \"outfile = sprintf('outfile.tmp');\\nfh = fopen(outfile, 'w');\\nstr = evalc('test()');\\nfprintf(fh, '%%s', str);\\nfclose(fh);\\nquit\\n\" > tester.m",
+            "makeCaller" : "printf \"\\n\\n\" | cat ~input~ - ~sourcefile~ > test.m",
+            "time0": "matlab -wait -nosplash -nodesktop < tester.m >random",
+            "run": "cat outfile.tmp"
+        }
     }
+
 }
+

@@ -171,6 +171,7 @@ function run($path, $program, $input, $limit = -1) {
         $execString = "cd $path; $program";
     } else {
         $execString = getcwd() . "/timeout_runner.sh '$path' '$program' $limit";
+        
     }
     $process = proc_open($execString, $descriptorspec, $pipes);
     if (!is_resource($process)) {
@@ -210,7 +211,7 @@ function run($path, $program, $input, $limit = -1) {
     }
     $res = killprocess($process);
 
-    return array('stdout' => $output, 'stderr' => $stderr, "result" => $res);
+    return array('stdout' => $output, 'stderr' => $stderr, "result" => $res, "exec" => $execString);
 }
 
 /**
@@ -231,8 +232,14 @@ function mark($language, $sourcecode, $input, $output, $timelimit) {
     $code = new program_file($lang, $sourcecode, $input);
 
     foreach ($code->commands as $key => $command) {
-        if ($key == "run") {
+        //$runner = (strpos($key, 'run')==0);
+        $runner = (($key=="run")||(strpos($key, "time")===0));
+        if ($runner) {
             $outputs = run($code->path, $command, $input, $timelimit);
+            if(strpos($outputs["stderr"], 'Time limit exceeded') != FALSE){
+                break;
+            }
+            
         } else {
             $outputs = run($code->path, $command, $input);
         }
@@ -244,11 +251,16 @@ function mark($language, $sourcecode, $input, $output, $timelimit) {
         }
     }
 
-    if ($key == "run") {
+    if ($runner) {
         if(strpos($outputs["stderr"], 'Time limit exceeded') != FALSE){
             $outputs["result"] = result_time_limit;
         } else {
+            $output = str_replace("\r", "", $output);
+            $outputs['stdout'] = str_replace("\r", "", $outputs['stdout']);
+
             $outputs["result"] = test_output($output, $outputs['stdout']);
+            $outputs["modelout"] = trim($output);
+            $outputs["progout"] = trim($outputs['stdout']);
         }
     } else {
         $outputs["result"] = result_compile_error;
