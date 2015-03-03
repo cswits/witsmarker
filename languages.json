@@ -41,7 +41,7 @@
         }
     },
     "6": {
-        "name": "C++",
+        "name": "C++98",
         "extension": "cpp",
         "commands": {
             "compile": "g++ -o ~sourcefile_noex~.out ~sourcefile~ -lm",
@@ -69,13 +69,29 @@
         }
     },
 "9": {
-        "name": "C_Custom",
-        "extension": "c",
+        "name": "Make",
+        "extension": "cpp",
+        "commands": {
+            "rm_imain" : "sed -i 's:int\\s*main\\s*(:int old_main(:g' ~sourcefile~",
+            "rm_vmain" : "sed -i 's:void\\s*main\\s*(:void old_main(:g' ~sourcefile~",
+	    "download" : "wget -O files.zip `cat ~input~ | head -1`",
+	    "unzip"    : "unzip files.zip",
+            "compile": "make",
+            "run": "./a.out < ~input~"
+        },
+        "tests": {
+            "download": "files.zip",
+            "compile": "a.out"
+        }
+    },
+"11": {
+        "name": "C++11 Custom Main",
+        "extension": "cpp",
         "commands": {
             "rm_imain" : "sed -i 's:int\\s*main\\s*(:int old_main(:g' ~sourcefile~",
             "rm_vmain" : "sed -i 's:void\\s*main\\s*(:void old_main(:g' ~sourcefile~",
             "concat": "cat ~sourcefile~ `echo` ~input~  > combined.c",
-            "compile": "gcc -o combined combined.c -lm",
+            "compile": "g++ -std=c++11 -o combined combined.c -lm",
             "run": "./combined"
         },
         "tests": {
@@ -86,12 +102,22 @@
         "name": "matlab",
         "extension": "m",
         "commands": {
-            "makeTester" : "printf \"outfile = sprintf('outfile.tmp');\\nfh = fopen(outfile, 'w');\\nstr = evalc('test()');\\nfprintf(fh, '%%s', str);\\nfclose(fh);\\nquit\\n\" > tester.m",
+            "makeTester" : "printf \"clear;\\ncd ~path~\\noutfile = sprintf('outfile.tmp');\\nfh = fopen(outfile, 'w');\\nstr = 'Time Limit Exceeded';\\nstr = evalc('test()');\\nfprintf(fh, '%%s', str);\\nfclose(fh);\\n\" > tester.m",
             "makeCaller" : "printf \"\\n\\n\" | cat ~input~ - ~sourcefile~ > test.m",
-            "time0": "matlab -wait -nosplash -nodesktop < tester.m >random",
-            "run": "cat outfile.tmp"
+            "matlabd": "~markers~/matlabd tester.m ~timeout~",
+	    "run": "cat outfile.tmp"
+        }
+    },
+"12": {
+        "name": "C++11",
+        "extension": "cpp",
+        "commands": {
+            "compile": "g++ -std=c++11 -o ~sourcefile_noex~.out ~sourcefile~ -lm",
+            "run": "./~sourcefile_noex~.out"
+        },
+        "tests": {
+            "compile": "~sourcefile_noex~.out"
         }
     }
-
 }
 

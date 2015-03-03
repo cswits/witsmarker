@@ -52,7 +52,8 @@ class program_file {
     public $sourcefile; ///< Replaces sourcefile in commands
     public $id;         ///< Submission ID
     public $commands;   ///< Commands with Keywords Replaced
-    public $tests;       ///< Tests with Keywords Replaced    
+    public $tests;       ///< Tests with Keywords Replaced 
+    public $timelimit;   ///< Timelimit. Currently only used by the matlab marker   
 
     /**
      * Constructor
@@ -61,12 +62,13 @@ class program_file {
      * @param string $input Optional Input data to be written to file
      */
 
-    function program_file($lang, $sourcecode, $input = "") {
+    function program_file($lang, $sourcecode, $timelimit, $input = "") {
         // Get filename extension from $lang
         $this->extension = $lang['extension'];
         // All files are called source
         $this->filename = "source";
         $this->sourcefile = "$this->filename.$this->extension";
+        $this->timelimit=$timelimit;
 
         // Get the Submission ID
         $this->id = uniqid("", $more_entropy = true);
@@ -100,7 +102,9 @@ class program_file {
             $value = str_replace("~sourcefile~", $this->sourcefile, $value);
             $value = str_replace("~sourcefile_noex~", $this->filename, $value);
             $value = str_replace("~input~", "input", $value);
-
+            $value = str_replace("~markers~", getcwd(), $value);
+            $value = str_replace("~path~", $this->path, $value);
+            $value = str_replace("~timeout~", $this->timelimit, $value);
             $temp[$key] = $value;
         }
         return $temp;
@@ -229,7 +233,7 @@ function mark($language, $sourcecode, $input, $output, $timelimit) {
     $languages = json_decode($string, true);
 
     $lang = $languages[$language];
-    $code = new program_file($lang, $sourcecode, $input);
+    $code = new program_file($lang, $sourcecode, $timelimit, $input);
 
     foreach ($code->commands as $key => $command) {
         //$runner = (strpos($key, 'run')==0);
