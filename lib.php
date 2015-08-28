@@ -6,7 +6,7 @@
  */
 // Include global configurations
 require_once("config.php");
-
+	const output_max_length = 20000;
         const result_correct = 1;           ///< Correct Submission
         const result_incorrect = 11;        ///< Incorrect Submission
         const result_compile_error = 3;     ///< Compile Error
@@ -201,6 +201,9 @@ function run($path, $program, $input, $limit = -1) {
             flush();
         }
     }
+    $len = strlen($output);
+    if ($len>output_max_length)
+    	$output = substr($output, output_max_length);
     $stderr = '';
     if (is_resource($process)) {
         while (!feof($pipes[2])) {
@@ -213,6 +216,10 @@ function run($path, $program, $input, $limit = -1) {
             flush();
         }
     }
+    $len = strlen($stderr);
+    if ($len>output_max_length)
+    	$stderr = substr($stderr, output_max_length);
+
     $res = killprocess($process);
 
     return array('stdout' => $output, 'stderr' => $stderr, "result" => $res, "exec" => $execString);

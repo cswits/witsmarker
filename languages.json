@@ -11,6 +11,7 @@
         "extension": "zip",
         "commands": {
             "unzip": "unzip ~sourcefile~",
+	    "movesource":"mv src/* .",
             "compile": "javac Program.java",
             "run": "java -Djava.security.manager Program"
         }
@@ -63,6 +64,7 @@
         "extension": "zip",
         "commands": {
             "unzip": "unzip ~sourcefile~",
+	    "move":"mv src/* .",
             "rename": "mv ~input~ Test.java",
             "compile": "javac Test.java",
             "run": "java -Djava.security.manager Test"
@@ -105,7 +107,7 @@
             "makeTester" : "printf \"clear;\\ncd ~path~\\noutfile = sprintf('outfile.tmp');\\nfh = fopen(outfile, 'w');\\nstr = 'Time Limit Exceeded';\\nstr = evalc('test()');\\nfprintf(fh, '%%s', str);\\nfclose(fh);\\n\" > tester.m",
             "makeCaller" : "printf \"\\n\\n\" | cat ~input~ - ~sourcefile~ > test.m",
             "matlabd": "~markers~/matlabd tester.m ~timeout~",
-	    "run": "cat outfile.tmp"
+            "run": "cat outfile.tmp"
         }
     },
 "12": {
