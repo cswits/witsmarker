@@ -274,7 +274,11 @@ function mark($language, $sourcecode, $input, $output, $timelimit) {
             $outputs["progout"] = trim($outputs['stdout']);
         }
     } else {
-        $outputs["result"] = result_compile_error;
+        if(strpos($outputs["stderr"], 'Time limit exceeded') != FALSE){
+            $outputs["result"] = result_time_limit;
+        }else{
+	    $outputs["result"] = result_compile_error;
+	}
     }
     return $outputs;
 }
