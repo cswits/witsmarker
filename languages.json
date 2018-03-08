@@ -34,7 +34,7 @@
         "name": "C",
         "extension": "c",
         "commands": {
-            "compile": "gcc -o ~sourcefile_noex~.out ~sourcefile~ -lm",
+            "compile": "gcc -Wfatal-errors -o ~sourcefile_noex~.out ~sourcefile~ -lm",
             "run": "./~sourcefile_noex~.out"
         },
         "tests": {
@@ -45,7 +45,7 @@
         "name": "C++98",
         "extension": "cpp",
         "commands": {
-            "compile": "g++ -o ~sourcefile_noex~.out ~sourcefile~ -lm",
+            "compile": "g++ -Wfatal-errors -o ~sourcefile_noex~.out ~sourcefile~ -lm",
             "run": "./~sourcefile_noex~.out"
         },
         "tests": {
@@ -93,7 +93,7 @@
             "rm_imain" : "sed -i 's:int\\s*main\\s*(:int old_main(:g' ~sourcefile~",
             "rm_vmain" : "sed -i 's:void\\s*main\\s*(:void old_main(:g' ~sourcefile~",
             "concat": "cat ~sourcefile~ `echo` ~input~  > combined.c",
-            "compile": "g++ -std=c++11 -o combined combined.c -lm",
+            "compile": "g++ -Wfatal-errors -std=c++11 -o combined combined.c -lm",
             "run": "./combined"
         },
         "tests": {
@@ -114,8 +114,8 @@
         "name": "C++11",
         "extension": "cpp",
         "commands": {
-            "compile": "g++ -std=c++11 -o ~sourcefile_noex~.out ~sourcefile~ -lm",
-            "run": "./~sourcefile_noex~.out"
+            "compile": "g++ -Wfatal-errors -std=c++11 -o ~sourcefile_noex~.out ~sourcefile~ -lm",
+            "run": "./~sourcefile_noex~.out | tee output.txt"
         },
         "tests": {
             "compile": "~sourcefile_noex~.out"

@@ -25,7 +25,7 @@ if (count($_FILES) != 0) {
             "Accept: application/json\r\n"
         )
     );
-    $url = "http://127.0.0.1/mark/mark.php";
+    $url = "http://marker.ms.wits.ac.za/marker/mark.php";
 
     $context = stream_context_create($options);
     $result = file_get_contents($url, false, $context);

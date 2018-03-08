@@ -203,7 +203,7 @@ function run($path, $program, $input, $limit = -1) {
     }
     $len = strlen($output);
     if ($len>output_max_length)
-    	$output = substr($output, output_max_length);
+    	$output = substr($output, 0, output_max_length);
     $stderr = '';
     if (is_resource($process)) {
         while (!feof($pipes[2])) {
@@ -218,7 +218,7 @@ function run($path, $program, $input, $limit = -1) {
     }
     $len = strlen($stderr);
     if ($len>output_max_length)
-    	$stderr = substr($stderr, output_max_length);
+    	$stderr = substr($stderr, 0, output_max_length);
 
     $res = killprocess($process);
 
@@ -247,7 +247,7 @@ function mark($language, $sourcecode, $input, $output, $timelimit) {
         $runner = (($key=="run")||(strpos($key, "time")===0));
         if ($runner) {
             $outputs = run($code->path, $command, $input, $timelimit);
-            if(strpos($outputs["stderr"], 'Time limit exceeded') != FALSE){
+            if(strpos($outputs["stderr"], 'Time limit exceeded') !== FALSE){
                 break;
             }
             
@@ -263,8 +263,9 @@ function mark($language, $sourcecode, $input, $output, $timelimit) {
     }
 
     if ($runner) {
-        if(strpos($outputs["stderr"], 'Time limit exceeded') != FALSE){
+        if(strpos($outputs["stderr"], 'Time limit exceeded') !== FALSE){
             $outputs["result"] = result_time_limit;
+            $outputs["progout"] = "(" . $code->path . ")";
         } else {
             $output = str_replace("\r", "", $output);
             $outputs['stdout'] = str_replace("\r", "", $outputs['stdout']);
@@ -272,12 +273,15 @@ function mark($language, $sourcecode, $input, $output, $timelimit) {
             $outputs["result"] = test_output($output, $outputs['stdout']);
             $outputs["modelout"] = trim($output);
             $outputs["progout"] = trim($outputs['stdout']);
+            $outputs["progout"] .= " (" . $code->path . ")";
         }
     } else {
-        if(strpos($outputs["stderr"], 'Time limit exceeded') != FALSE){
+        if(strpos($outputs["stderr"], 'Time limit exceeded') !== FALSE){
             $outputs["result"] = result_time_limit;
+            $outputs["progout"] = "(" . $code->path . ")";
         }else{
 	    $outputs["result"] = result_compile_error;
+            $outputs["progout"] = "(" . $code->path . ")";
 	}
     }
     return $outputs;
