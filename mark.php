@@ -13,6 +13,8 @@ $input = json_decode($inputJSON, TRUE);        // Decode the JSON object
 $source = base64_decode($input['source']);     // Decode the Base64
 // Mark the submission
 // This returns the stderr, stdout and result
+$input['input'] = str_replace("\r\n","\n",$input['input']);
+$input['output'] = str_replace("\r\n","\n",$input['output']);
 $val = mark($input['language'], $source,
         $input['input'], $input['output'], $input["timelimit"]);
 

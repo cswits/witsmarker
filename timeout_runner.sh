@@ -8,7 +8,7 @@ cd $1
 # Connect stderr (&2) to stderr of program
 # Run program in the background
 
-timeout ${3}s $2 <&0 >&1 2>&2
+timeout ${3}s $2 <&0 2>&2 | tee output.txt >&1
 i=$?
 if [ $i -eq 124 ]; then
 	echo "Time limit exceeded" >&2

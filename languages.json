@@ -115,7 +115,7 @@
         "extension": "cpp",
         "commands": {
             "compile": "g++ -Wfatal-errors -std=c++11 -o ~sourcefile_noex~.out ~sourcefile~ -lm",
-            "run": "./~sourcefile_noex~.out | tee output.txt"
+            "run": "./~sourcefile_noex~.out"
         },
         "tests": {
             "compile": "~sourcefile_noex~.out"
