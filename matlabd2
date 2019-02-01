@@ -40,13 +40,13 @@
 # Revision History:
 # Jan. 20. 2011  First release.
 
-if [[ ! -p /tmp/mlpipe ]]; then
-	mkfifo /tmp/mlpipe;
+if [[ ! -p /tmp/mlpipe2 ]]; then
+	mkfifo /tmp/mlpipe2;
 fi
 
-if [[ -z "$(lsof /tmp/mlpipe)" ]]; then
+if [[ -z "$(lsof /tmp/mlpipe2)" ]]; then
 	MATLAB="matlab -nosplash -r \"addpath('/var/www/html/marker')\""
-	CMD="tail -f /tmp/mlpipe | $MATLAB 1> /tmp/matlab.out 2>/tmp/matlab.err &"
+	CMD="tail -f /tmp/mlpipe2 | $MATLAB 1> /tmp/matlab2.out 2>/tmp/matlab2.err &"
 	echo "Starting Matlab Daemon"
 	echo $CMD
 	nohup bash -c "$CMD" &>/tmp/matlab.nohup
