@@ -1,3 +1,3 @@
 # PiedMarker2
 
-Marker used by the competitive assignments moodle plugin
+Marker used by the competitive assignments moodle plugin.
