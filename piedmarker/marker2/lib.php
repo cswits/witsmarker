@@ -6,15 +6,12 @@
  */
 // Include global configurations
 require_once("config.php");
-
-
-
 const output_max_length = 20000;
 const result_correct = ASSIGNFEEDBACK_WITSOJ_STATUS_ACCEPTED;        		///< Correct Submission
 const result_incorrect = ASSIGNFEEDBACK_WITSOJ_STATUS_INCORRECT;     		///< Incorrect Submission
 const result_compile_error = ASSIGNFEEDBACK_WITSOJ_STATUS_COMPILEERROR;     	///< Compile Error
 const result_presentation_error = ASSIGNFEEDBACK_WITSOJ_STATUS_PRESENTATIONERROR; ///< Presentation Error
-const result_time_limit = ASSIGNFEEDBACK_WITSOJ_STATUS_TIMELIMIT;       	///< Exceeded Time Limit
+const result_time_limit = ASSIGNFEEDBACK_WITSOJ_STATUS_TIMELIMIT;       	///1< Exceeded Time Limit
 const result_marker_error = ASSIGNFEEDBACK_WITSOJ_STATUS_MARKERERROR;	    	///< Marker Error
 const result_mixed = ASSIGNFEEDBACK_WITSOJ_STATUS_MIXED;	    		///< Submission has been graded
 const result_runtime=ASSIGNFEEDBACK_WITSOJ_STATUS_RUNTIMEERROR;			
@@ -101,8 +98,7 @@ class program_file {
 	 * @param string $sourcecode All the sourcecode to be written to the file
 	 * @param string $input Optional Input data to be written to file
 	 */
-
-	function program_file($lang, $sourcecode, $markerid, $timelimit, $sourcepath = "", $extra_path = "", $firstname = "", $lastname = "", $userid = "") {
+	function program_file($lang, $sourcecode, $markerid, $timelimit, $sourcepath = "", $extra_path = "", $firstname = "", $lastname = "",   $userid = "") {
 		// Get filename extension from $lang
 		$this->extension = $lang['extension']; //TODO allow override from student file
 		// All files are called source
@@ -154,6 +150,7 @@ class program_file {
 	function setup_commands($comm, $inputfile, $outputfile, $args = '') {
 		$temp = $comm;
                 $inputfilenoex = substr($inputfile, 0, strpos($inputfile, '.'));
+               
 		//if($args != ''){
 		//	$args = '"'.$args.'"'; // Add quotes around args if it exists
 		//}
@@ -162,6 +159,7 @@ class program_file {
 			$value = str_replace("~sourcefile_noex~", $this->filename, $value);
 			$value = str_replace("~input~", $inputfile, $value);
 			$value = str_replace("~input_noex~", $inputfilenoex, $value);
+			
 			$value = str_replace("~output~", $outputfile, $value);
 			$value = str_replace("~markers~", getcwd(), $value);
 			$value = str_replace("~path~", $this->path, $value);
@@ -175,6 +173,8 @@ $lastname = preg_replace('/\s+/', '', $this->lastname);
 			$value = str_replace("~userid~", $this->userid, $value);
 			$temp[$key] = $value;
 		}
+	
+	
 		return $temp;
 	}
 
@@ -234,7 +234,8 @@ function mark_log($text){
  * @return Array containing stdout, stderr and exit code (result).
  * @throws Exception if the program cannot be started.
  */
-function run($path, $program, $input, $limit = -1) {
+function run($path, $program, $input, $limit = -1, $n=1) {
+  //  echo "here";
 	$descriptorspec = array(
 		0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
 		1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
@@ -244,9 +245,10 @@ function run($path, $program, $input, $limit = -1) {
 	if ($limit == -1) {
 		$execString = "cd $path; $program";
 	} else {
-		$execString = getcwd() . "/timeout_runner.sh '$path' '$program' $limit";
+		$execString = getcwd() . "/timeout_runner.sh '$path' '$program' $limit '$n'";
 
 	}
+	//echo $input;
 	$process = proc_open($execString, $descriptorspec, $pipes);
 	if (!is_resource($process)) {
 		throw new Exception('bad_program could not be started.');
@@ -315,7 +317,7 @@ function update_status($curr, $update){
  * @param int $timelimit   Time limit for the "run" command.
  * @return string array containing STDERR, STDOUT and the result.
  */
-function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, $pe_ratio) {
+function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, $pe_ratio, $n,$prog,$type) {
 	$string = file_get_contents("languages.json");
 	$languages = json_decode($string, true); // THIS IS NOT PARSING PROPERLY AT THE MOMENT?!
 	foreach ($languages as $k => $v){
@@ -333,25 +335,27 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 		$outputs = array("result" => result_marker_error, "oj_feedback" => "Marker Error: Invalid Language");
 		return array("status" => result_marker_error, "oj_feedback" => "Marker Error: Invalid Language", "grade" => -1.0, "outputs" => array($outputs) );
 	}
-	$lang = $languages[$language];
 
+	$lang = $languages[$language];
+    //echo (json_encode($lang));
 	$prefix = $userid . "/";
 	$code = new program_file($lang, $sourcecode, $markerid, $cpu_limit, $tests["path"], $prefix, $firstname, $lastname, $userid);
-
 	$compile_commands = $code->setup_commands($code->compile_commands, "input", "output");
 	$compile_tests    = $code->setup_commands($code->compile_tests   , "input", "output");
 	
 	foreach ($compile_commands as $key => $command) {
-		$runner = (($key=="run")||(strpos($key, "time")===0));
+	    $runner = (($key=="run")||(strpos($key, "time")===0));
 		if ($runner) {
-			$outputs = run($code->path, $command, "", $cpu_limit);
+			$outputs = run($code->path, $command, "", $cpu_limit,$n);
+
 			if(strpos($outputs["stderr"], 'Time limit exceeded') !== FALSE){
 				$outputs["result"] = result_compile_error;
 				$outputs["oj_feedback"] = "Compile Time Exceeded";
 				return array("status" => result_compile_error, "oj_feedback" => "Compile Time Limit Exceeded", "grade" => 0.0, "outputs" => array($outputs));
 			}
 		} else {
-			$outputs = run($code->path, $command, "");
+			$outputs = run($code->path, $command, "",$cpu_limit=null,$n);
+			
 		}
 		if (array_key_exists($key, $compile_tests)) {
 			$filename = $code->path . "/" . $compile_tests[$key];
@@ -367,22 +371,31 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 	$total_grade = 0.0;
 	$max_grade = 0.0;
 	$status = null;
-	// Run each test case
 	foreach ($tests["yml"]["test_cases"] as $tc){
 		$outputs = null;
 		$timeout_problem = false;
 		$result = array();
 		$commands = $code->setup_commands($code->commands, $tc["in"], $tc["out"], $tc["args"]);
 		// Run each command
-			
+			//echo json_encode($commands);
 		foreach ($commands as $key => $command) {
 			$runner = (($key=="run")||(strpos($key, "time")===0));
-			$input = file_get_contents($code->path . "/" . $tc["in"]);
-			$input = str_replace("\r", "", $input);
+			if($type==1){
+		       $input=$prog;
+		       $input = str_replace("\r", "", $input);
+			}
+			else { 
+			  $input = file_get_contents($code->path . "/" . $tc["in"]);
+			  $input = str_replace("\r", "", $input);
+			}
 			if ($key == "display"){
 				$displayout = run($code->path, $command, $input);
+				//	echo $input;
+				//echo(json_encode($outputs));
+				
 			} elseif ($runner) {
-				$outputs = run($code->path, $command, $input, $cpu_limit);//what if i time this????
+			
+				$outputs = run($code->path, $command, $input, $cpu_limit,$n);
 				if(strpos($outputs["stderr"], 'Error') !== FALSE ){
 					return array("status" => result_runtime, "oj_feedback" => "Run Time Error", "grade" => 0.0, "outputs" => array($outputs));
 				}
@@ -391,7 +404,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 					break;
 				}
 			} else {
-				$outputs = run($code->path, $command, $input);
+				$outputs = run($code->path, $command, $input,$n);
 			}
 		}
 		if(!isset($tc["feedback"])){
@@ -446,7 +459,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 	}
 
 	error_log("TOTALGRADE: " . $total_grade);
-
+	//echo json_encode($all_outputs);
 	return array("status" => $status, "oj_feedback" => "Graded", "grade" => $total_grade*100.0/$max_grade, "outputs" => $all_outputs);
 }
 
@@ -459,7 +472,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
  */
 function test_output($correct, $progoutput) {
 	//die ($progoutput);
-	$progoutput = join("\n", array_slice(explode("\n", $progoutput), 0, -1));//remove the last line in the stdout
+	$progoutput = join("\n", array_slice(explode("\n", $progoutput), 0, -1));//remove the last line in the stdout#time____
 	$correct = trim($correct);
 	$progoutput = trim($progoutput);
 	if ($correct == $progoutput) {
@@ -578,7 +591,7 @@ function testcases($testcases) {
 			}
 		}
         }
-
+    //echo json_encode($yml);
 	return array("path" => $path_extracted, "yml" => $yml);
 }
 
@@ -588,9 +601,11 @@ function averageTime($inputJson){
     $jsonArray=json_decode($inputJson);
     $num_case=count($jsonArray);
     $avetime=0;
+    //echo getLastLines($jsonArray[$i]->stdout);
     for ($i=0;$i<$num_case;$i++){
         $avetime+= getLastLines($jsonArray[$i]->stdout);
     }
+
     return round(floatval($avetime/$num_case)*1000,3);
 
 }
@@ -639,7 +654,6 @@ $ch = curl_init($callback);
 	}
 
 	if($response != '{"status" : "0"}'){
-		var_dump("didnt2");
 		error_log($response);
 		return false;
 	}
