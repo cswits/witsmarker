@@ -198,10 +198,10 @@ $lastname = preg_replace('/\s+/', '', $this->lastname);
  * @param int $process PID of the process to kill
  * @return int exit code of the process
  */
-class mork{
-
+class tuna{
 function Test(){
 	return 2;
+}
 }
 function killprocess($process) {
 	$status = proc_get_status($process);
@@ -665,5 +665,5 @@ $ch = curl_init($callback);
 	
 	return true;
 }
-}
+
 ?>

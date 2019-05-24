@@ -1,11 +1,10 @@
 <?php
 use PHPUnit\Framework\TestCase;
 use PHPUnit\DbUnit\TestCaseTrait;
-class lib extends TestCase{
+class libTest extends TestCase{
     public function test_Test_2(){
-        $temp=new mork;
-        $tester=$temp->Test();
-        $result = $tester;
+        $tester=new tuna;
+        $result = $tester->Test();
         $expected = array("Classic Mode", "Fastest Mode", "Tournament Mode", "AI Mode");
         $this->assertEquals(2,$result,"correct!");
     }
