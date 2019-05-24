@@ -43,7 +43,9 @@ function deleteDirectory($dir) {
 	}
 	return rmdir($dir);
 }
-
+function Test(){
+	return 2;
+}
 //https://hotexamples.com/examples/-/-/recurse_copy/php-recurse_copy-function-examples.html
 function recurse_copy($source, $dest)
 {
