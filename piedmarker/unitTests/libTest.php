@@ -1,7 +1,7 @@
 <?php
 use PHPUnit\Framework\TestCase;
 use PHPUnit\DbUnit\TestCaseTrait;
-class libTest extends TestCase{
+class lib extends TestCase{
     public function test_Test_2(){
         $temp=new mork;
         $tester=$temp->Test();
