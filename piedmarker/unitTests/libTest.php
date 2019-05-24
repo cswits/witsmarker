@@ -6,7 +6,6 @@ class libTest extends TestCase{
         $temp=new mork;
         $tester=temp->Test();
         $result = $tester;
-        $expected = array("Classic Mode", "Fastest Mode", "Tournament Mode", "AI Mode");
         $this->assertEquals(2,$result,"correct!");
     }
  
