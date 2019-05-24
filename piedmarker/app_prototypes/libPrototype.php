@@ -199,7 +199,7 @@ $lastname = preg_replace('/\s+/', '', $this->lastname);
  * @return int exit code of the process
  */
 class tuna{
-function Test(){
+public function Test(){
 	return 2;
 }
 }
