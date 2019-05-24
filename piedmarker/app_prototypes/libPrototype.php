@@ -43,9 +43,7 @@ function deleteDirectory($dir) {
 	}
 	return rmdir($dir);
 }
-function Test(){
-	return 2;
-}
+
 //https://hotexamples.com/examples/-/-/recurse_copy/php-recurse_copy-function-examples.html
 function recurse_copy($source, $dest)
 {
@@ -200,6 +198,11 @@ $lastname = preg_replace('/\s+/', '', $this->lastname);
  * @param int $process PID of the process to kill
  * @return int exit code of the process
  */
+class mork{
+
+function Test(){
+	return 2;
+}
 function killprocess($process) {
 	$status = proc_get_status($process);
 	if ($status['running'] == true) { //process ran too long, kill it
@@ -661,5 +664,6 @@ $ch = curl_init($callback);
 	}
 	
 	return true;
+}
 }
 ?>

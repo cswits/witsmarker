@@ -223,7 +223,6 @@ function killprocess($process) {
 function mark_log($text){
 	file_put_contents(settings::$temp."/log.txt", $text);
 }
-
 /**
  * Runs a program with a timelimit and input.
  * @param string $path  Working directory of the program. 
