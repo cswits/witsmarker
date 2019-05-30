@@ -6,21 +6,10 @@ cd $1
 # Connect stdout (&1) to stdout of program
 # Connect stderr (&2) to stderr of program
 # Run program in the background
-x=1
-sum=0
-/usr/bin/time -f "%e" -o out.txt timeout ${3}s $2 <&0 2>&2 > output.txt 
-#for ((i=1;i<${4};i++))
- #   do
-       
-         #timeout ${3}s $2 <&0 2>&2 | tee output.txt >&1
-         # /usr/bin/time -f "%e" -o out.txt
-        #sum=$(bc <<< "scale=4; $(head -c -1 out.txt) +$sum")
-       # echo $sum;
-        #x=$(( $x + 1 ))
-#done
-#printf "\n">>output.txt
+printf "\n" >out.txt
+/usr/bin/time -f "%e" -o out.txt -a timeout ${3}s $2 <&0 2>&2 > output.txt 
 cat out.txt>>output.txt
-cat output.txt
+head -c -1 output.txt
 #bc <<< "scale=4;$sum/${4}">> output.txt
 i=$?
 #cat out.txt #>&1 # Workout $? returning the output code of tee
