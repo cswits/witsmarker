@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="Unit tests" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.234088">
-    <testsuite name="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.234088">
-      <testcase name="test_test" class="lib" classname="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" line="5" assertions="1" time="0.234088"/>
+  <testsuite name="Unit tests" tests="1" assertions="0" errors="1" failures="0" skipped="0" time="0.003829">
+    <testsuite name="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" tests="1" assertions="0" errors="1" failures="0" skipped="0" time="0.003829">
+      <testcase name="test_test" class="lib" classname="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" line="5" assertions="0" time="0.003829">
+        <error type="PHPUnit\Framework\Error\Notice">lib::test_test
+Undefined property: program_file::$compile_commands
+
+/var/www/html/PiedMarker2/app_prototypes/libPrototype.php:341
+/var/www/html/PiedMarker2/app_prototypes/mark2Prototype.php:53
+/var/www/html/PiedMarker2/unitTests/libTest.php:7
+</error>
+        <system-out>
+</system-out>
+      </testcase>
     </testsuite>
   </testsuite>
 </testsuites>

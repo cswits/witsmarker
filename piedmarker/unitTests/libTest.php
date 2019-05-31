@@ -8,6 +8,8 @@ class lib extends TestCase{
         $expected = array("Classic Mode", "Fastest Mode", "Tournament Mode", "AI Mode");
        $this->expectOutputString('hello');
     }
- 
+     public function test_test4(){
+     	$this->assertEquals("2","2","correct");
+    }
  
 }
