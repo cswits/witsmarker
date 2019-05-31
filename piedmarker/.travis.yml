@@ -1,6 +1,6 @@
 language: php
 php:
-  - 7.2.15
+  - 5
 env:
   - MYSQL_HOST=127.0.0.1 MYSQL_USER=root
 services:
@@ -20,7 +20,7 @@ before_install:
   #- mysql -e 'USE moodle; SELECT * FROM mdl_assignfeedback_customfeedback WHERE id=2;'
 install:
   - composer require satooshi/php-coveralls:~0.6@stable
-  - composer require --dev phpunit/phpunit ^8.1.5
+  - composer require --dev phpunit/dbunit
   - composer install
 before_script:
   - mkdir -p ./test_reports/logs
