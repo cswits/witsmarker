@@ -1,6 +1,6 @@
 language: php
 php:
-  - 7.1.1
+  - 7.2.15
 env:
   - MYSQL_HOST=127.0.0.1 MYSQL_USER=root
 services:
@@ -32,4 +32,4 @@ after_script:
 - php vendor/bin/coveralls -v
 
 after_success:
-- coveralls-upload
+- coveralls-text

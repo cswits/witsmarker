@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="Unit tests" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.234207">
-    <testsuite name="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.234207">
-      <testcase name="test_test" class="lib" classname="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" line="5" assertions="1" time="0.234088"/>
-      <testcase name="test_test4" class="lib" classname="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" line="11" assertions="1" time="0.000119"/>
+  <testsuite name="Unit tests" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.231191">
+    <testsuite name="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.231191">
+      <testcase name="test_test" class="lib" classname="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" line="5" assertions="1" time="0.231059"/>
+      <testcase name="test_test4" class="lib" classname="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" line="11" assertions="1" time="0.000132"/>
     </testsuite>
   </testsuite>
 </testsuites>
