@@ -316,7 +316,7 @@ function update_status($curr, $update){
  */
 function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, $pe_ratio, $n,$type,$evaluator,$prog){
 	//echo getcwd();
-	$string = file_get_contents("/home/travis/build/maniac22/PiedMarker/app_prototypes/languages.json");
+	$string = file_get_contents("/home/travis/build/maniac22/PiedMarker2/app_prototypes/languages.json");
 	$languages = json_decode($string, true); // THIS IS NOT PARSING PROPERLY AT THE MOMENT?!
 	foreach ($languages as $k => $v){
 		//error_log("Comparing: " . $language . " and " . $v["name"] . " ($k)");
