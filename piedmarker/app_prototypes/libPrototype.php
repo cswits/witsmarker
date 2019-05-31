@@ -98,7 +98,7 @@ class program_file {
 	 * @param string $sourcecode All the sourcecode to be written to the file
 	 * @param string $input Optional Input data to be written to file
 	 */
-	function program_file($lang, $sourcecode, $markerid, $timelimit, $sourcepath = "", $extra_path = "", $firstname = "", $lastname = "",   $userid = "",$evaluator=false) {
+	 public function __construct($lang, $sourcecode, $markerid, $timelimit, $sourcepath = "", $extra_path = "", $firstname = "", $lastname = "",   $userid = "",$evaluator=false) {
 		// Get filename extension from $lang
 		$this->extension = $lang['extension']; //TODO allow override from student file
 		// All files are called source
@@ -147,7 +147,7 @@ class program_file {
 	 * @param array $comm Array of commands
 	 * @return Array of commands with keywords replaced
 	 */
-	function setup_commands($comm, $inputfile, $outputfile, $args = '') {
+	public function setup_commands($comm, $inputfile, $outputfile, $args = '') {
 		$temp = $comm;
         $inputfilenoex = substr($inputfile, 0, strpos($inputfile, '.'));
 
