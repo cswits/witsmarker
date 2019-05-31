@@ -98,7 +98,7 @@ class program_file {
 	 * @param string $sourcecode All the sourcecode to be written to the file
 	 * @param string $input Optional Input data to be written to file
 	 */
-	function program_file($lang, $sourcecode, $markerid, $timelimit, $sourcepath = "", $extra_path = "", $firstname = "", $lastname = "",   $userid = "",$evaluator=false) {
+	__constructor($lang, $sourcecode, $markerid, $timelimit, $sourcepath = "", $extra_path = "", $firstname = "", $lastname = "",   $userid = "",$evaluator=false) {
 		// Get filename extension from $lang
 		$this->extension = $lang['extension']; //TODO allow override from student file
 		// All files are called source
