@@ -5,7 +5,7 @@ class lib extends TestCase{
     public function test_test(){
     	///home/travis/build/maniac22/
 
-    	require("/home/travis/build/maniac22/PiedMarker2/app_prototypes/mark2Prototype.php");
+    	require("app_prototypes/mark2Prototype.php");
         $expected = array("Classic Mode", "Fastest Mode", "Tournament Mode", "AI Mode");
        	$this->expectOutputString('hello');
     }

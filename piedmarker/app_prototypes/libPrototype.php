@@ -98,7 +98,7 @@ class program_file {
 	 * @param string $sourcecode All the sourcecode to be written to the file
 	 * @param string $input Optional Input data to be written to file
 	 */
-	 public function __construct($lang, $sourcecode, $markerid, $timelimit, $sourcepath = "", $extra_path = "", $firstname = "", $lastname = "",   $userid = "",$evaluator=false) {
+	function program_file($lang, $sourcecode, $markerid, $timelimit, $sourcepath = "", $extra_path = "", $firstname = "", $lastname = "",   $userid = "",$evaluator=false) {
 		// Get filename extension from $lang
 		$this->extension = $lang['extension']; //TODO allow override from student file
 		// All files are called source
@@ -147,7 +147,7 @@ class program_file {
 	 * @param array $comm Array of commands
 	 * @return Array of commands with keywords replaced
 	 */
-	public function setup_commands($comm, $inputfile, $outputfile, $args = '') {
+	function setup_commands($comm, $inputfile, $outputfile, $args = '') {
 		$temp = $comm;
         $inputfilenoex = substr($inputfile, 0, strpos($inputfile, '.'));
 
@@ -243,8 +243,7 @@ function run($path, $program, $input, $limit = -1) {
 	if ($limit == -1) {
 		$execString = "cd $path; $program";
 	} else {
-		//echo getcwd();
-		$execString = getcwd() . "/marker2/timeout_runner.sh '$path' '$program' $limit ";
+		$execString = getcwd() . "/timeout_runner.sh '$path' '$program' $limit '$n'";
 
 	}
 	$process = proc_open($execString, $descriptorspec, $pipes);
@@ -315,8 +314,8 @@ function update_status($curr, $update){
  * @return string array containing STDERR, STDOUT and the result.
  */
 function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, $pe_ratio, $n,$type,$evaluator,$prog){
-	//echo getcwd();
-	$string = file_get_contents("/home/travis/build/maniac22/PiedMarker2/app_prototypes/languages.json");
+	echo getcwd();
+	$string = file_get_contents("/var/www/html/PiedMarker2/app_prototypes/languages.json");
 	$languages = json_decode($string, true); // THIS IS NOT PARSING PROPERLY AT THE MOMENT?!
 	foreach ($languages as $k => $v){
 		//error_log("Comparing: " . $language . " and " . $v["name"] . " ($k)");
@@ -375,11 +374,10 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 		$outputs = null;
 		$timeout_problem = false;
 		$result = array();
-		//error_log("moves");
-		$tc["out"]="";
+		error_log(strval(json_encode($tc)));
 		$commands = $code->setup_commands($code->commands, $tc["in"], $tc["out"], $tc["args"]);
 		// Run each command
-		error_log("moves");
+		error_log("fff");
 		foreach ($commands as $key => $command) {
 			$runner = (($key=="run")||(strpos($key, "time")===0));
 			error_log("runnning somwe code");
@@ -407,7 +405,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 				$time=0;
 				for ($i=0;$i<$n;$i++){
 					$outputs = run($code->path, $command, $input, $cpu_limit);
-					$temp=floatval($outputs['stdout']);
+					$temp=strval($outputs['stdout']);
 					$outputs['stdout']=join("\n", array_slice(explode("\n",$outputs['stdout']), 0, -1));
 					$time+=getLastLines($temp);
 				}
@@ -448,7 +446,6 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 			$outputs["modelout"] = trim($model_output);				// Model output
 			//$outputs["progout"] = trim($outputs['stdout']);				// Actual output
 			$outputs["path"] =  $code->path;					// Path on marker
-			$tc["points"]="";
 			$outputs["max_grade"] = $tc["points"];
 			$max_grade += floatval($tc["points"]);
 			if($outputs["result"] === result_presentation_error){			// Presentation Error
@@ -457,7 +454,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 				$outputs["oj_feedback"] = $tc["feedback"];
 				$status = update_status($status, result_presentation_error);
 			}else if($outputs["result"] === result_correct){			// Correct
-				$total_grade += floatval($tc["points"]);					//	Add full points
+				$total_grade += $tc["points"];					//	Add full points
 				$outputs["grade"] = $tc["points"];
 				$outputs["oj_feedback"] = $tc["feedback"];
 				$status = update_status($status, result_correct);
@@ -475,7 +472,6 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 	}
 	error_log("TOTALGRADE: " . $total_grade);
 	//echo  $code->evaluator;
-	$max_grade=1;
 	if($type==1 and $code->evaluator)$status=4;//the student's output is not null
 	return array("status" => $status, "oj_feedback" => "Graded", "grade" => $total_grade*100.0/$max_grade, "outputs" => $all_outputs);
 }
@@ -657,7 +653,7 @@ function return_grade($callback, $markerid, $userid, $grade, $status, $oj_testca
 	$data['memory']=-1;// to be implemented soon
 	$data['customfeedback_name'] = settings::$auth_token['customfeedback_name'];
 $test="http://1710409.ms.wits.ac.za/test.php";
-$ch = curl_init($test);
+$ch = curl_init($callback);
         curl_setopt_array($ch, array(
             CURLOPT_POST => count($data),
             CURLOPT_RETURNTRANSFER => TRUE,
@@ -669,11 +665,10 @@ $ch = curl_init($test);
         ));
 
 	// Send the request
-    //error_log(strval(json_encode($oj_testcases['stdout'])));
 	$response = curl_exec($ch);
 	//echo $data["score"];
-	//var_dump($response);
-	//die("here");
+	var_dump($response);
+	die("here");
 	// Check for errors
 	if($response === FALSE){
 

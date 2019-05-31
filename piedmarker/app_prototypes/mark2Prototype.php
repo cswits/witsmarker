@@ -1,7 +1,6 @@
 <?php
 require_once("configPrototype.php"); // Include Global Configuration
 require_once("libPrototype.php");    // Include Library Functions
-echo getcwd();
 $inputJSON =<<<JSN
 {"userid":"2","n":"5","language":"4","cpu_limit":"0.1","mem_limit":"0","pe_ratio":"0","callback":"1710409.ms.wits.ac.za/moodleDev/mod/assign/feedback/customfeedback/update_record.php?assign_id=28&question_id=0","testcase":{"url":"http://1710409.ms.wits.ac.za/opti.zip","contenthash":"371f4d2751056d8ee42faebc7e6e5f3e5c0a245b","pathnamehash":"31231126c5d3f8a617652fbe92b73dbf6cd8a98f"},"source":{"content":"cHJpbnQoImhlbGxvIik=","ext":"py"},"evaluator":{"content":"Yz1zdHIoaW5wdXQoKSkKcHJpbnQoYyxsZW4oYykp","ext":"py"},"mode":"0","customfeedback_token":"1e6947ac7fb3a9529a9726eb692c8cc5","markerid":"1","firstname":"mpho","lastname":"mpho"}
 JSN;
@@ -31,24 +30,24 @@ if($auth != settings::$auth_token['customfeedback_token']){
 	error_log('{"status" : "Bad auth"}');
 	die('{"status" : "Bad auth"}');
 }
-
+echo "hello";
 $tests = testcases($testcase);
 $test_count = count($tests["yml"]["test_cases"]);
 $output = array("status" => "0", "test_count" => $test_count);
-//echo json_encode($tests);
+// //echo json_encode($tests);
 
-// Send all the output back to moodle
-// $size =ob_get_length();
-// header("Content-Encoding: none");
-// header("Content-Length: {$size}");
-// header("Connection: close");
-// ob_end_flush();
-// ob_flush();
-// flush();
-// Now continue with the marking work.
-error_log("Closed moodle connection. Starting to mark....");
+// // Send all the output back to moodle
+// // $size =ob_get_length();
+// // header("Content-Encoding: none");
+// // header("Content-Length: {$size}");
+// // header("Connection: close");
+// // ob_end_flush();
+// // ob_flush();
+// // flush();
+// // Now continue with the marking work.
+// error_log("Closed moodle connection. Starting to mark....");
 
-//student's code! 
+// //student's code! 
 $evaluate=false;
 $student_marker_data = mark($source, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, floatval($pe_ratio),$n,$type,$evaluate,"");
 $status = $student_marker_data["status"];

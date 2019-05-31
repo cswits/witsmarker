@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Unit tests" tests="2" assertions="1" errors="1" failures="0" skipped="0" time="0.013716">
+    <testsuite name="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" tests="2" assertions="1" errors="1" failures="0" skipped="0" time="0.013716">
+      <testcase name="test_test" class="lib" classname="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" line="5" assertions="0" time="0.013624">
+        <error type="PHPUnit\Framework\Error\Notice">lib::test_test
+Undefined index: out
+
+/var/www/html/PiedMarker2/app_prototypes/libPrototype.php:378
+/var/www/html/PiedMarker2/app_prototypes/mark2Prototype.php:52
+/var/www/html/PiedMarker2/unitTests/libTest.php:8
+</error>
+        <system-out>
+hello/var/www/html/PiedMarker2</system-out>
+      </testcase>
+      <testcase name="test_test4" class="lib" classname="lib" file="/var/www/html/PiedMarker2/unitTests/libTest.php" line="12" assertions="1" time="0.000092"/>
+    </testsuite>
+  </testsuite>
+</testsuites>
