@@ -2,12 +2,13 @@
 require_once("configPrototype.php"); // Include Global Configuration
 require_once("libPrototype.php");    // Include Library Functions
 $inputJSON =<<<JSN
-{"userid":"2","n":"5","language":"4","cpu_limit":"0.1","mem_limit":"0","pe_ratio":"0","callback":"1710409.ms.wits.ac.za/moodleDev/mod/assign/feedback/customfeedback/update_record.php?assign_id=28&question_id=0","testcase":{"url":"http://1710409.ms.wits.ac.za/opti.zip","contenthash":"371f4d2751056d8ee42faebc7e6e5f3e5c0a245b","pathnamehash":"31231126c5d3f8a617652fbe92b73dbf6cd8a98f"},"source":{"content":"cHJpbnQoImhlbGxvIik=","ext":"py"},"evaluator":{"content":"Yz1zdHIoaW5wdXQoKSkKcHJpbnQoYyxsZW4oYykp","ext":"py"},"mode":"0","customfeedback_token":"1e6947ac7fb3a9529a9726eb692c8cc5","markerid":"1","firstname":"mpho","lastname":"mpho"}
+{"userid":"2","n":"5","language":"4","cpu_limit":"0.1","mem_limit":"0","pe_ratio":"0","callback":"1710409.ms.wits.ac.za/moodleDev/mod/assign/feedback/customfeedback/update_record.php?assign_id=66&question_id=0","testcase":{"url":"http://1710409.ms.wits.ac.za/opti.zip","contenthash":"371f4d2751056d8ee42faebc7e6e5f3e5c0a245b","pathnamehash":"31231126c5d3f8a617652fbe92b73dbf6cd8a98f"},"source":{"content":"cHJpbnQoImhlbGxvIik=","ext":"py"},"evaluator":{"content":"Yz1zdHIoaW5wdXQoKSkKcHJpbnQoYyxsZW4oYykp","ext":"py"},"mode":"0","customfeedback_token":"1e6947ac7fb3a9529a9726eb692c8cc5","markerid":"1","firstname":"mpho","lastname":"mpho"}
 JSN;
 //$inputJSON = file_get_contents('php://input');//Get input from the client
 $input = json_decode($inputJSON, TRUE); // Decode the JSON object
 $markerid = $input["markerid"];
 $auth = $input["customfeedback_token"];
+$grade=100;
 $userid = $input["userid"];
 $firstname = $input["firstname"];
 $lastname = $input["lastname"];
@@ -54,7 +55,7 @@ $status = $student_marker_data["status"];
 $oj_feedback = $student_marker_data["oj_feedback"];
 $outputs = $student_marker_data["outputs"];
 $score=$student_marker_data["outputs"][0]['stdout'];
-$grade=100;
+
 //evaluator!
 if($type==1){
 	$evaluate=TRUE;
@@ -67,9 +68,9 @@ if($type==1){
 	$score=$evaluator_marker_data["outputs"][0]['stdout'];
 	//echo $score;
 }
-echo($score);
+echo($grade);
 
-return_grade($callback, $markerid, $userid, $grade, $status, json_encode($outputs), $oj_feedback,$type,$score);
+//return_grade($callback, $markerid, $userid, $grade, $status, json_encode($outputs), $oj_feedback,$type,$score);
 //error_log("Grade sent.");
 
 

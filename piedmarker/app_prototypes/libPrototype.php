@@ -17,6 +17,7 @@ const result_mixed = ASSIGNFEEDBACK_WITSOJ_STATUS_MIXED;	    		///< Submission h
 const result_runtime=ASSIGNFEEDBACK_WITSOJ_STATUS_RUNTIMEERROR;
 
 
+
 /**
  * Recursively delete a directory
  * @param string $dir Directory to Delete
@@ -234,6 +235,7 @@ function mark_log($text){
  * @throws Exception if the program cannot be started.
  */
 function run($path, $program, $input, $limit = -1) {
+	$n=1;
 	$descriptorspec = array(
 		0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
 		1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
@@ -374,6 +376,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 		$outputs = null;
 		$timeout_problem = false;
 		$result = array();
+		$tc["out"]="out1.txt";
 		error_log(strval(json_encode($tc)));
 		$commands = $code->setup_commands($code->commands, $tc["in"], $tc["out"], $tc["args"]);
 		// Run each command
@@ -407,7 +410,9 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 					$outputs = run($code->path, $command, $input, $cpu_limit);
 					$temp=strval($outputs['stdout']);
 					$outputs['stdout']=join("\n", array_slice(explode("\n",$outputs['stdout']), 0, -1));
-					$time+=getLastLines($temp);
+					error_log("___________________--");
+					error_log(strval($temp));
+					$time+=10;
 				}
 				$outputs["run_time"]=$time/$n;
 				if(strpos($outputs["stderr"], 'Error') !== FALSE ){
@@ -445,8 +450,11 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 			}
 			$outputs["modelout"] = trim($model_output);				// Model output
 			//$outputs["progout"] = trim($outputs['stdout']);				// Actual output
-			$outputs["path"] =  $code->path;					// Path on marker
+			$outputs["path"] =  $code->path;
+			error_log(strval(json_encode($tc)));
+			$tc["points"]=100;					// Path on marker
 			$outputs["max_grade"] = $tc["points"];
+
 			$max_grade += floatval($tc["points"]);
 			if($outputs["result"] === result_presentation_error){			// Presentation Error
 				$total_grade += $pe_ratio * floatval($tc["points"]);			//	Scale by pe_ratio
