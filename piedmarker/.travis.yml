@@ -32,4 +32,4 @@ after_script:
 - php vendor/bin/coveralls -v
 
 after_success:
-- coveralls-text
+- coveralls-upload
