@@ -376,7 +376,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 			
 			if($type==1 and $code->evaluator){
 		       $input=$prog;
-		       $input = str_replace("\r", "", $input);
+		       $input = trim(str_replace("\r", "", $input));//remove spaces 
 		       //if the student's code outputs no solution,then they should get zero
 		       if($input=="")return array("status" => result_runtime, "oj_feedback" => "Run Time Error,AKA no OptiOutput", "grade" => 0.0, "outputs" => array($outputs));
 			}
@@ -411,7 +411,15 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 					break;
 				}
 			} else {
-				$outputs = run($code->path, $command, $input,$n);
+				$time=0;
+				for($i=0;$i<$n;$i++){
+					$outputs = run($code->path, $command, $input, $cpu_limit);
+					$temp=strval($outputs['stdout']);
+					$outputs['stdout']=join("\n", array_slice(explode("\n",$outputs['stdout']), 0, -1));
+					$time+=getLastLines($temp);
+				}
+				$outputs["run_time"]=$time/$n;
+				
 			}
 		}
 		if(!isset($tc["feedback"])){
@@ -645,7 +653,7 @@ function return_grade($callback, $markerid, $userid, $grade, $status, $oj_testca
 	}
 	$data['memory']=-1;// to be implemented soon
 	$data['customfeedback_name'] = settings::$auth_token['customfeedback_name'];
-$test="http://1710409.ms.wits.ac.za/test.php";
+// $test="http://1710409.ms.wits.ac.za/test.php";
 $ch = curl_init($callback);
         curl_setopt_array($ch, array(
             CURLOPT_POST => count($data),
