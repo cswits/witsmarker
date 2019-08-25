@@ -88,9 +88,11 @@ class program_file {
 	public $commands;   ///< Commands with Keywords Replaced
 	public $tests;       ///< Tests with Keywords Replaced
 	public $timelimit;   ///< Timelimit. Currently only used by the matlab marker
+	public $Mainfile;	///<main file to run
 	public $firstname;
 	public $lastname;
 	public $userid;
+	
 
 	/**
 	 * Constructor
@@ -110,6 +112,7 @@ class program_file {
 		$this->lastname = $lastname;
 		$this->userid = $userid;
 		$this->evaluator=$evaluator;
+
 		// Get the Submission ID
 		$this->id = date("Ymd-His-") . uniqid("", $more_entropy = true);
 
@@ -121,6 +124,7 @@ class program_file {
 		$this->path = "$this->path/$this->extension/$extra_path$this->id";
 		// Construct the full path/file
 		$this->fullname = "$this->path/$this->filename.$this->extension";
+		//die(var_dump($sourcecode));
 
 		// Create the folder
 		mkdir($this->path, 0777, $recursive = true);
@@ -154,12 +158,13 @@ class program_file {
 		//if($args != ''){
 		//	$args = '"'.$args.'"'; // Add quotes around args if it exists
 		//}
+		//die($this->Mainfile);
 		foreach ($temp as $key => $value) {
 			$value = str_replace("~sourcefile~", $this->sourcefile, $value);
 			$value = str_replace("~sourcefile_noex~", $this->filename, $value);
 			$value = str_replace("~input~", $inputfile, $value);
 			$value = str_replace("~input_noex~", $inputfilenoex, $value);
-
+			$value=str_replace("~competitivePython~",$this->Mainfile,$value);
 			$value = str_replace("~output~", $outputfile, $value);
 			$value = str_replace("~markers~", getcwd(), $value);
 			$value = str_replace("~path~", $this->path, $value);
@@ -329,12 +334,20 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 		$outputs = array("result" => result_marker_error, "oj_feedback" => "Marker Error: Invalid Language");
 		return array("status" => result_marker_error, "oj_feedback" => "Marker Error: Invalid Language", "grade" => -1.0, "outputs" => array($outputs) );
 	}
+	
 
+	
 	$lang = $languages[$language];
 
 	$prefix = $userid . "/";
 	$code = new program_file($lang, $sourcecode, $markerid, $cpu_limit, $tests["path"], $prefix, $firstname, $lastname, $userid,$evaluator);
+	//die("test");
+	if(isset($tests["yml"]["file_name"]))$code->Mainfile=$tests["yml"]["file_name"];
+	else $code->Mainfile=$code->sourcefile;
+
+	//die("dddsd");
 	$compile_commands = $code->setup_commands($code->compile_commands, "input", "output");
+	
 	$compile_tests    = $code->setup_commands($code->compile_tests   , "input", "output");
 
 	foreach ($compile_commands as $key => $command) {
@@ -359,6 +372,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 			}
 		}
 	}
+	
 
 	$all_outputs = array();
 	$total_grade = 0.0;
@@ -370,6 +384,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 		$timeout_problem = false;
 		$result = array();
 		$commands = $code->setup_commands($code->commands, $tc["in"], $tc["out"], $tc["args"]);
+
 		// Run each command
 		foreach ($commands as $key => $command) {
 			$runner = (($key=="run")||(strpos($key, "time")===0));
@@ -396,14 +411,18 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 				$outputs["run_time"]=$time/$n;
 			} elseif ($runner) {
 				$time=0;
+				//die(var_dump($command));
 				for ($i=0;$i<$n;$i++){
 					$outputs = run($code->path, $command, $input, $cpu_limit);
+					//die(var_dump($command));
 					$temp=strval($outputs['stdout']);
 					$outputs['stdout']=join("\n", array_slice(explode("\n",$outputs['stdout']), 0, -1));
 					$time+=getLastLines($temp);
 				}
 				$outputs["run_time"]=$time/$n;
-				if(strpos($outputs["stderr"], 'Error') !== FALSE ){
+				
+				if(strpos($outputs["stderr"], 'Error') !== FALSE || strpos($outputs["stderr"], "/usr/bin/python3: can't find '__main__' module in 'source.py'") !== FALSE){
+					//die(var_dump($outputs));
 					return array("status" => result_runtime, "oj_feedback" => "Run Time Error", "grade" => 0.0, "outputs" => array($outputs));
 				}
 				if(strpos($outputs["stderr"], 'Time limit exceeded') !== FALSE or strpos($outputs["stdout"], 'Time limit exceeded') !== FALSE){
@@ -654,6 +673,10 @@ function return_grade($callback, $markerid, $userid, $grade, $status, $oj_testca
 	$data['memory']=-1;// to be implemented soon
 	$data['customfeedback_name'] = settings::$auth_token['customfeedback_name'];
 // $test="http://1710409.ms.wits.ac.za/test.php";
+<<<<<<< HEAD
+	//die(json_encode($data));
+=======
+>>>>>>> a673c08e429694e919a06096dc0c9ce642848542
 $ch = curl_init($callback);
         curl_setopt_array($ch, array(
             CURLOPT_POST => count($data),

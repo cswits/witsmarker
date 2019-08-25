@@ -23,6 +23,7 @@ $type =$input["mode"];
 $callback = $input["callback"]; // Post back to this address after marking
 $testcase = $input["testcase"]; // url, contenthash, pathnamehash
 $source = base64_decode($input["source"]["content"]);     // Decode the Base64
+//die(var_dump($source));
 settings::$temp .= "/$markerid";
 // Start buffering output
 ob_start();
@@ -55,7 +56,12 @@ $student_marker_data = mark($source, $tests, $language, $userid, $firstname, $la
 $status = $student_marker_data["status"];
 $oj_feedback = $student_marker_data["oj_feedback"];
 $outputs = $student_marker_data["outputs"];
+<<<<<<< HEAD
+
+//die(var_dump($student_marker_data));
+=======
 //die(var_dump("here"));
+>>>>>>> a673c08e429694e919a06096dc0c9ce642848542
 //evaluator!
 if($type==1){
 	$evaluate=TRUE;
@@ -68,7 +74,6 @@ if($type==1){
 	$score=$evaluator_marker_data["outputs"][0]['stdout'];
 	//echo $score;
 }
-//echo json_encode($outputs);
 
 return_grade($callback, $markerid, $userid, $grade, $status, json_encode($outputs), $oj_feedback,$type,$score);
 error_log("Grade sent.");

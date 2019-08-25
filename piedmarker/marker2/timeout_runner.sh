@@ -6,6 +6,7 @@ cd $1
 # Connect stdout (&1) to stdout of program
 # Connect stderr (&2) to stderr of program
 # Run program in the background
+
 printf "\n" >out.txt
 /usr/bin/time -f "%e" -o out.txt -a timeout ${3}s $2 <&0 2>&2 > output.txt 
 cat out.txt>>output.txt

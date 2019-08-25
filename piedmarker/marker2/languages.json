@@ -180,6 +180,18 @@
             "submit": "curl -u admin:weshouldchangethis -X PUT --data-urlencode source@submit.in \"http://lamp.ms.wits.ac.za:8080/SnakeDBService/agents/0/~firstname~_~lastname~/~userid~/1/\" >out.txt 2>err.txt",
 	    "run": "echo 'true'"
         }
+    },
+"16": {
+    "name": "PythonZip",
+    "extension": "py",
+    "compile" :{
+        "unzip": "unzip ~sourcefile~",
+        "movesource":"mv src/* ."
+    },
+	"compile_tests" : {},
+        "commands": {
+            "run": "python3 ~competitivePython~"
+        }
     }
 }
 
