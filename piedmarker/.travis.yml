@@ -24,14 +24,13 @@ before_install:
 install:
   - composer require satooshi/php-coveralls:~0.6@stable
   - composer install
-  - composer require --dev phpunit/phpunit ^8
+  - composer require --dev phpunit/dbunit 
 before_script:
   - mkdir -p ./test_reports/logs
 script:
   - phpunit --version
   - composer dump-autoload
   - phpunit  --coverage-clover ./test_reports/logs/clover.xml
-  - ./phpunit --bootstrap vendor/autoload.php unitTests
 after_script:
 - php vendor/bin/coveralls -v
 
