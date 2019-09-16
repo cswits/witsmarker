@@ -333,7 +333,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 		$outputs = array("result" => result_marker_error, "oj_feedback" => "Marker Error: Invalid Language");
 		return array("status" => result_marker_error, "oj_feedback" => "Marker Error: Invalid Language", "grade" => -1.0, "outputs" => array($outputs) );
 	}
-
+	die();
 	$lang = $languages[$language];
 
 	$prefix = $userid . "/";

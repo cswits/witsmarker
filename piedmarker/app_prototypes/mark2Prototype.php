@@ -51,10 +51,10 @@ $output = array("status" => "0", "test_count" => $test_count);
 //student's code! 
 $evaluate=false;
 $student_marker_data = mark($source, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, floatval($pe_ratio),$n,$type,$evaluate,"");
-$status = $student_marker_data["status"];
-$oj_feedback = $student_marker_data["oj_feedback"];
-$outputs = $student_marker_data["outputs"];
-$score=$student_marker_data["outputs"][0]['stdout'];
+// $status = $student_marker_data["status"];
+// $oj_feedback = $student_marker_data["oj_feedback"];
+// $outputs = $student_marker_data["outputs"];
+// $score=$student_marker_data["outputs"][0]['stdout'];
 echo "hello";
 //evaluator!
 // if($type==1){
