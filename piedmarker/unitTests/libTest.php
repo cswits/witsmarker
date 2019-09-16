@@ -8,8 +8,7 @@ class lib extends TestCase{
 
     	require("app_prototypes/mark2Prototype.php");
         //$expected = array("Classic Mode", "Fastest Mode", "Tournament Mode", "AI Mode");
-        $this->expectOutputString('hello');
-        $this->assertEquals("2","2","correct");
+        $this->expectOutputString('100');
     }
      public function test_test4(){
      	$this->assertEquals("2","2","correct");
