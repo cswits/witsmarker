@@ -32,20 +32,20 @@ if($auth != settings::$auth_token['customfeedback_token']){
 	die('{"status" : "Bad auth"}');
 }
 
-// $tests = testcases($testcase);
-// $test_count = count($tests["yml"]["test_cases"]);
-// $output = array("status" => "0", "test_count" => $test_count);
+$tests = testcases($testcase);
+$test_count = count($tests["yml"]["test_cases"]);
+$output = array("status" => "0", "test_count" => $test_count);
 // //echo json_encode($tests);
 
-// // Send all the output back to moodle
-// // $size =ob_get_length();
-// // header("Content-Encoding: none");
-// // header("Content-Length: {$size}");
-// // header("Connection: close");
-// // ob_end_flush();
-// // ob_flush();
-// // flush();
-// // Now continue with the marking work.
+// Send all the output back to moodle
+// $size =ob_get_length();
+// header("Content-Encoding: none");
+// header("Content-Length: {$size}");
+// header("Connection: close");
+// ob_end_flush();
+// ob_flush();
+// flush();
+// Now continue with the marking work.
 // error_log("Closed moodle connection. Starting to mark....");
 
 //student's code! 
