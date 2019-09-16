@@ -209,36 +209,9 @@ $tests=NULL;
 
 //student's code! 
 $evaluate=false;
-//$student_marker_data = mark($source, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, floatval($pe_ratio),$n,$type,$evaluate,"");
-// $status = $student_marker_data["status"];
-// $oj_feedback = $student_marker_data["oj_feedback"];
-// $outputs = $student_marker_data["outputs"];
-// $score=$student_marker_data["outputs"][0]['stdout'];
-
-
-	
-// $string = file_get_contents("/var/www/html/PiedMarker2/app_prototypes/languages.json");
-// $languages = json_decode($string, true); // THIS IS NOT PARSING PROPERLY AT THE MOMENT?!
 $lang = NULL;
 $prefix = $userid . "/";
 $code = new program_file($lang, $source, $markerid, $cpu_limit, $tests["path"], $prefix, $firstname, $lastname, $userid,false);
 echo $grade;
-//evaluator!
-// if($type==1){
-// 	$evaluate=TRUE;
-// 	$eval_code=base64_decode($input["evaluator"]["content"]);
-// 	$eval_input=$student_marker_data["outputs"][0]['stdout'];
-// 	$evaluator_marker_data = mark($eval_code, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, floatval($pe_ratio),$n,$type,$evaluate,$eval_input);
-// 	$status = $evaluator_marker_data["status"];;
-// 	$oj_feedback = $evaluator_marker_data["oj_feedback"];
-// 	$outputs = $evaluator_marker_data["outputs"];
-// 	$score=$evaluator_marker_data["outputs"][0]['stdout'];
-// 	//echo $score;
-// }
-// echo($grade);
-
-//return_grade($callback, $markerid, $userid, $grade, $status, json_encode($outputs), $oj_feedback,$type,$score);
-//error_log("Grade sent.");
-
 
 ?>
