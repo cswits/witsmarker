@@ -164,7 +164,7 @@ $evaluate=false;
 // $languages = json_decode($string, true); // THIS IS NOT PARSING PROPERLY AT THE MOMENT?!
 $lang = NULL;
 $prefix = $userid . "/";
-$code = new program_file($lang, $source, $markerid, $cpu_limit, $tests["path"], $prefix, $firstname, $lastname, $userid,$evaluator);
+$code = new program_file($lang, $source, $markerid, $cpu_limit, $tests["path"], $prefix, $firstname, $lastname, $userid,false);
 
 test2();
 //evaluator!
