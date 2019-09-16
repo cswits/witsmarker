@@ -1,6 +1,6 @@
 language: php
 php:
-  - 7.2.15
+  - 7.1.1
 env:
   - MYSQL_HOST=127.0.0.1 MYSQL_USER=root
 services:
