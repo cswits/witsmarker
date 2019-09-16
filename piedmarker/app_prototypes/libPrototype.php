@@ -316,6 +316,7 @@ function update_status($curr, $update){
  * @return string array containing STDERR, STDOUT and the result.
  */
 function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, $pe_ratio, $n,$type,$evaluator,$prog){
+	die("hello");
 	$string = file_get_contents("/var/www/html/PiedMarker2/app_prototypes/languages.json");
 	$languages = json_decode($string, true); // THIS IS NOT PARSING PROPERLY AT THE MOMENT?!
 	foreach ($languages as $k => $v){
@@ -333,7 +334,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 		$outputs = array("result" => result_marker_error, "oj_feedback" => "Marker Error: Invalid Language");
 		return array("status" => result_marker_error, "oj_feedback" => "Marker Error: Invalid Language", "grade" => -1.0, "outputs" => array($outputs) );
 	}
-	die();
+	
 	$lang = $languages[$language];
 
 	$prefix = $userid . "/";
