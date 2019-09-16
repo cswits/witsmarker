@@ -32,9 +32,9 @@ if($auth != settings::$auth_token['customfeedback_token']){
 	die('{"status" : "Bad auth"}');
 }
 echo "hello";
-$tests = testcases($testcase);
-$test_count = count($tests["yml"]["test_cases"]);
-$output = array("status" => "0", "test_count" => $test_count);
+// $tests = testcases($testcase);
+// $test_count = count($tests["yml"]["test_cases"]);
+// $output = array("status" => "0", "test_count" => $test_count);
 // //echo json_encode($tests);
 
 // // Send all the output back to moodle
@@ -49,26 +49,26 @@ $output = array("status" => "0", "test_count" => $test_count);
 // error_log("Closed moodle connection. Starting to mark....");
 
 // //student's code! 
-$evaluate=false;
-$student_marker_data = mark($source, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, floatval($pe_ratio),$n,$type,$evaluate,"");
-$status = $student_marker_data["status"];
-$oj_feedback = $student_marker_data["oj_feedback"];
-$outputs = $student_marker_data["outputs"];
-$score=$student_marker_data["outputs"][0]['stdout'];
+// $evaluate=false;
+// $student_marker_data = mark($source, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, floatval($pe_ratio),$n,$type,$evaluate,"");
+// $status = $student_marker_data["status"];
+// $oj_feedback = $student_marker_data["oj_feedback"];
+// $outputs = $student_marker_data["outputs"];
+// $score=$student_marker_data["outputs"][0]['stdout'];
 
 //evaluator!
-if($type==1){
-	$evaluate=TRUE;
-	$eval_code=base64_decode($input["evaluator"]["content"]);
-	$eval_input=$student_marker_data["outputs"][0]['stdout'];
-	$evaluator_marker_data = mark($eval_code, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, floatval($pe_ratio),$n,$type,$evaluate,$eval_input);
-	$status = $evaluator_marker_data["status"];;
-	$oj_feedback = $evaluator_marker_data["oj_feedback"];
-	$outputs = $evaluator_marker_data["outputs"];
-	$score=$evaluator_marker_data["outputs"][0]['stdout'];
-	//echo $score;
-}
-echo($grade);
+// if($type==1){
+// 	$evaluate=TRUE;
+// 	$eval_code=base64_decode($input["evaluator"]["content"]);
+// 	$eval_input=$student_marker_data["outputs"][0]['stdout'];
+// 	$evaluator_marker_data = mark($eval_code, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, floatval($pe_ratio),$n,$type,$evaluate,$eval_input);
+// 	$status = $evaluator_marker_data["status"];;
+// 	$oj_feedback = $evaluator_marker_data["oj_feedback"];
+// 	$outputs = $evaluator_marker_data["outputs"];
+// 	$score=$evaluator_marker_data["outputs"][0]['stdout'];
+// 	//echo $score;
+// }
+// echo($grade);
 
 //return_grade($callback, $markerid, $userid, $grade, $status, json_encode($outputs), $oj_feedback,$type,$score);
 //error_log("Grade sent.");
