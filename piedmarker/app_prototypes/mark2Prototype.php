@@ -222,8 +222,7 @@ $evaluate=false;
 $lang = NULL;
 $prefix = $userid . "/";
 $code = new program_file($lang, $source, $markerid, $cpu_limit, $tests["path"], $prefix, $firstname, $lastname, $userid,false);
-
-test2();
+echo $grade;
 //evaluator!
 // if($type==1){
 // 	$evaluate=TRUE;
