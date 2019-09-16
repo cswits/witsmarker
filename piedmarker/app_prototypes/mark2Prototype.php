@@ -160,9 +160,9 @@ $evaluate=false;
 
 
 	
-$string = file_get_contents("/var/www/html/PiedMarker2/app_prototypes/languages.json");
-$languages = json_decode($string, true); // THIS IS NOT PARSING PROPERLY AT THE MOMENT?!
-$lang = $languages[$language];
+// $string = file_get_contents("/var/www/html/PiedMarker2/app_prototypes/languages.json");
+// $languages = json_decode($string, true); // THIS IS NOT PARSING PROPERLY AT THE MOMENT?!
+$lang = NULL;
 $prefix = $userid . "/";
 $code = new program_file($lang, $source, $markerid, $cpu_limit, $tests["path"], $prefix, $firstname, $lastname, $userid,$evaluator);
 
