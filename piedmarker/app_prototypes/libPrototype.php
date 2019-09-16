@@ -305,6 +305,12 @@ function update_status($curr, $update){
 	return ASSIGNFEEDBACK_WITSOJ_STATUS_MIXED;
 }
 
+function test2(){
+
+	return 1;
+}
+
+
 /**
  * The main marking function. This is called from the webservice, saves the
  * source code, runs the commands and checks the output.
@@ -316,7 +322,7 @@ function update_status($curr, $update){
  * @return string array containing STDERR, STDOUT and the result.
  */
 function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, $pe_ratio, $n,$type,$evaluator,$prog){
-	die("hello");
+	
 	$string = file_get_contents("/var/www/html/PiedMarker2/app_prototypes/languages.json");
 	$languages = json_decode($string, true); // THIS IS NOT PARSING PROPERLY AT THE MOMENT?!
 	foreach ($languages as $k => $v){
