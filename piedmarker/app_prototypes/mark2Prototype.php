@@ -148,10 +148,7 @@ if($auth != settings::$auth_token['customfeedback_token']){
 	die('{"status" : "Bad auth"}');
 }
 
-$tests = testcases($testcase);
-$test_count = count($tests["yml"]["test_cases"]);
-$output = array("status" => "0", "test_count" => $test_count);
-
+$tests=NULL;
 
 //student's code! 
 $evaluate=false;
@@ -167,7 +164,7 @@ $string = file_get_contents("/var/www/html/PiedMarker2/app_prototypes/languages.
 $languages = json_decode($string, true); // THIS IS NOT PARSING PROPERLY AT THE MOMENT?!
 $lang = $languages[$language];
 $prefix = $userid . "/";
-$code = new program_file($lang, $sourcecode, $markerid, $cpu_limit, $tests["path"], $prefix, $firstname, $lastname, $userid,$evaluator);
+$code = new program_file($lang, $source, $markerid, $cpu_limit, $tests["path"], $prefix, $firstname, $lastname, $userid,$evaluator);
 
 test2();
 //evaluator!
