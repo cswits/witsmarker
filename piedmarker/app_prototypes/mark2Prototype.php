@@ -115,6 +115,62 @@ $lastname = preg_replace('/\s+/', '', $this->lastname);
 
 }
 
+/**
+ * Recursively delete a directory
+ * @param string $dir Directory to Delete
+ * @return boolean Success/Failure
+ */
+function deleteDirectory($dir) {
+	// If the folder/file doesn't exist return
+	if (!file_exists($dir))
+		return true;
+	// If it isn't a directory, remove and return
+	if (!is_dir($dir) || is_link($dir))
+		return unlink($dir);
+	// For each item in the directory
+	foreach (scandir($dir) as $item) {
+		// Ignore special folders
+		if ($item == '.' || $item == '..')
+			continue;
+		// Recursively delete items in the folder
+		if (!deleteDirectory($dir . "/" . $item)) {
+			//chmod($dir . "/" . $item, 0777);
+			if (!deleteDirectory($dir . "/" . $item))
+				return false;
+		};
+	}
+	return rmdir($dir);
+}
+
+//https://hotexamples.com/examples/-/-/recurse_copy/php-recurse_copy-function-examples.html
+function recurse_copy($source, $dest)
+{
+	// Check for symlinks
+	if (is_link($source)) {
+		return symlink(readlink($source), $dest);
+	}
+	// Simple copy for a file
+	if (is_file($source)) {
+		return copy($source, $dest);
+	}
+	// Make destination directory
+	if (!is_dir($dest)) {
+		mkdir($dest);
+	}
+	// Loop through the folder
+	$dir = dir($source);
+	while (false !== ($entry = $dir->read())) {
+		// Skip pointers
+		if ($entry == '.' || $entry == '..') {
+			continue;
+		}
+		// Deep copy directories
+		recurse_copy("{$source}/{$entry}", "{$dest}/{$entry}");
+	}
+	// Clean up
+	$dir->close();
+	return true;
+}
 
 
 $inputJSON =<<<JSN
