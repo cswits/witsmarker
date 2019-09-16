@@ -55,6 +55,7 @@ class program_file {
 		error_log("cp -r \"$sourcepath/*\" \"" . $this->path . "\"");
 		//$success = recurse_copy($sourcepath, $this->path);
 		//system("cp -r \"$sourcepath/\" \"" . $this->path . "\"", $success);
+		$success=true;
 		if(!$success){
 			$exception = new Exception("Marker Error" . $success);
 			$exception->details = array(result_marker_error, -1, array("Marker Error: Unable to copy testcases."));
