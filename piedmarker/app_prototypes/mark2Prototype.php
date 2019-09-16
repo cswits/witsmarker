@@ -53,7 +53,7 @@ class program_file {
 		file_put_contents($this->fullname, $sourcecode);
 
 		error_log("cp -r \"$sourcepath/*\" \"" . $this->path . "\"");
-		$success = recurse_copy($sourcepath, $this->path);
+		//$success = recurse_copy($sourcepath, $this->path);
 		//system("cp -r \"$sourcepath/\" \"" . $this->path . "\"", $success);
 		if(!$success){
 			$exception = new Exception("Marker Error" . $success);
