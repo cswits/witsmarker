@@ -23,8 +23,8 @@ before_install:
   #- mysql -e 'USE moodle; SELECT * FROM mdl_assignfeedback_customfeedback WHERE id=2;'
 install:
   - composer require satooshi/php-coveralls:~0.6@stable
-  - composer install
   - composer require --dev phpunit/dbunit 
+  - composer install
 before_script:
   - mkdir -p ./test_reports/logs
 script:
