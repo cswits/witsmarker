@@ -158,7 +158,7 @@ function recurse_copy($source, $dest)
 		mkdir($dest);
 	}
 	// Loop through the folder
-	$dir = dir($source);
+	$dir = dir(getcwd());
 	while (false !== ($entry = $dir->read())) {
 		// Skip pointers
 		if ($entry == '.' || $entry == '..') {
