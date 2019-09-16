@@ -13,6 +13,9 @@ addons:
       #- mysql-server
 dist: trusty
 sudo: required
+
+notifications:
+  email: false
 before_install:
   - composer self-update --rollback
   #- mysql -e 'CREATE DATABASE moodle;'
