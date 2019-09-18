@@ -181,7 +181,7 @@
 	    "run": "echo 'true'"
         }
     },
-"16": {
+"17": {
     "name": "PythonZip",
     "extension": "py",
     "compile" :{
