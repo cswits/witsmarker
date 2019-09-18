@@ -492,12 +492,13 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 		if(!isset($tc["feedback"])){
 			$tc["feedback"] = "";
 		}
+		$outputs["grade"] = 44.2;
 		if($timeout_problem){
 			// Check if we had a timeout
 			$outputs["result"] = result_time_limit;
 			$outputs["oj_feedback"] = $tc["feedback"];
 			$outputs["path"] = $code->path;
-			$outputs["grade"] = 0.0;
+			//$outputs["grade"] = 0.0;
 			$outputs["max_grade"] = $tc["points"];
 			$max_grade += floatval($tc["points"]);
 			$status = update_status($status, result_time_limit);
@@ -519,7 +520,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 				$max_grade += floatval($tc["points"]);
 				if($outputs["result"] === result_presentation_error){			// Presentation Error
 					$total_grade += $pe_ratio * floatval($tc["points"]);			//	Scale by pe_ratio
-					$outputs["grade"] = $pe_ratio * floatval($tc["points"]);
+					//$outputs["grade"] = $pe_ratio * floatval($tc["points"]);
 					$outputs["oj_feedback"] = $tc["feedback"];
 					$status = update_status($status, result_presentation_error);
 				}else if($outputs["result"] === result_correct){			// Correct
@@ -527,12 +528,11 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 					$outputs["grade"] = $tc["points"];
 					$outputs["oj_feedback"] = $tc["feedback"];
 					$status = update_status($status, result_correct);
-				}else if($outputs["result"] === result_incorrect){			// Incorrect (or something else)
-					$outputs["grade"] = 0.0;					// 	0 Marks
+				}else if($outputs["result"] === result_incorrect){			// Incorrect (or something else					// 	0 Marks
 					$outputs["oj_feedback"] = $tc["feedback"];
 					$status = update_status($status, result_incorrect);
 				}else{
-					$outputs["grade"] = 0.0;					// 	0 Marks
+					//$outputs["grade"] =  44.2;					// 	0 Marks
 					$outputs["oj_feedback"] = "Unknown Error, Check Marker";
 				}
 			}

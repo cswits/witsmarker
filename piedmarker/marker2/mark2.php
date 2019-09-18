@@ -56,6 +56,7 @@ $student_marker_data = mark($source, $tests, $language, $userid, $firstname, $la
 $status = $student_marker_data["status"];
 $oj_feedback = $student_marker_data["oj_feedback"];
 $outputs = $student_marker_data["outputs"];
+$grade = $student_marker_data["grade"];
 
 //evaluator!
 if($mode==OPTI_MODE){
@@ -67,6 +68,7 @@ if($mode==OPTI_MODE){
 	$status = $evaluator_marker_data["status"];
 	$oj_feedback = $evaluator_marker_data["oj_feedback"];
 	$outputs = $evaluator_marker_data["outputs"];
+	$grade = $evaluator_marker_data["grade"];
 	$score=$evaluator_marker_data["outputs"][0]['stdout'];		
 }
 
