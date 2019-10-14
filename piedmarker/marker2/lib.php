@@ -74,35 +74,6 @@ function recurse_copy($source, $dest)
 	$dir->close();
 	return true;
 }
-
-
-class AI{
-
-	public $baseCode;
-	public $sourceCode;
-	public $path;
-	public $id; 
-
-	function AI($baseCode,$sourceCode){
-		$this->baseCode=$baseCode;
-		$this->sourceCode=$sourceCode;
-		$this->id = date("Ymd-His-") . uniqid("", $more_entropy = true);
-
-	}
-
-
-
-	function __destruct() {
-		if (!settings::$keep_files) {
-			deleteDirectory($this->sourceCode->path);
-		}
-	}
-
-}
-
-
-
-
 /**
  * Object representing a source code file.
  */
@@ -123,6 +94,7 @@ class program_file {
 	public $firstname;
 	public $lastname;
 	public $userid;
+	public $snake_url;//only useful for snake grading
 	
 
 	/**
@@ -144,15 +116,18 @@ class program_file {
 		$this->userid = $userid;
 		$this->evaluator=$evaluator;
 	
-		if(isset($tests["yml"]["file_name"])){
-			$this->Mainfile=$tests["yml"]["file_name"];
-		}
+
+		//if zip,get entry script,else look for source
+		if(isset($tests["yml"]["file_name"]))$this->Mainfile=$tests["yml"]["file_name"];
 		else $this->Mainfile=$code->sourcefile;
-	
+		
+		//incase the snake_url is set use it, else use http://lamp.ms.wits.ac.za:8080/SnakeDBService/agents/0 
+		if(isset($tests["yml"]["snake_url"]))$this->snake_url=$tests["yml"]["snake_url"];
+		else $this->snake_url="http://lamp.ms.wits.ac.za:8080/SnakeDBService/agents/0";
 
 		// Get the Submission ID
 		$this->id = date("Ymd-His-") . uniqid("", $more_entropy = true);
-
+			//http://lamp.ms.wits.ac.za:8080/SnakeDBService/agents/0
 		// Construct the path
 		$this->path = settings::$temp;
 		if(trim($extra_path) != "" and substr($extra_path, -1) != "/"){
@@ -196,6 +171,7 @@ class program_file {
 		//	$args = '"'.$args.'"'; // Add quotes around args if it exists
 		//}
 		//die($this->Mainfile);
+		//"http://lamp.ms.wits.ac.za:8080/SnakeDBService/agents/0
 		foreach ($temp as $key => $value) {
 			$value = str_replace("~sourcefile~", $this->sourcefile, $value);
 			$value = str_replace("~sourcefile_noex~", $this->filename, $value);
@@ -206,6 +182,7 @@ class program_file {
 			$value = str_replace("~markers~", getcwd(), $value);
 			$value = str_replace("~path~", $this->path, $value);
 			$value = str_replace("~args~", $args, $value);
+			$value = str_replace("~snake_url~", $this->snake_url, $value);
 			$value = str_replace("~timeout~", $this->timelimit, $value);
 			$value = str_replace("~markerid~", $this->markerid, $value);
 $firstname = preg_replace('/\s+/', '', $this->firstname);
@@ -352,7 +329,6 @@ function getMode($mode){
 
 }
 
-
 function BadStatus($studentCodeStatus){
 	if(ASSIGNFEEDBACK_WITSOJ_STATUS_TIMELIMIT==$studentCodeStatus || ASSIGNFEEDBACK_WITSOJ_STATUS_RUNTIMEERROR==$studentCodeStatus || ASSIGNFEEDBACK_WITSOJ_STATUS_COMPILEERROR ==$studentCodeStatus)return true;
 	return false;
@@ -400,11 +376,10 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 		return array("status" => result_failed, "oj_feedback" => "NULL_OUTPUT_OPTIMODE", "grade" => 0.0, "outputs" => $output);
 	}
 	$compile_commands = $code->setup_commands($code->compile_commands, "input", "output");
-	
 	$compile_tests    = $code->setup_commands($code->compile_tests   , "input", "output");
 
 	foreach ($compile_commands as $key => $command) {
-	    $runner = (($key=="run")||(strpos($key, "time")===0));
+	    $runner = (($key=="run")||(strpos($key, "time")===0) || $key=="invoke");
 		if ($runner) {
 			$outputs = run($code->path, $command, "", $cpu_limit);
 			if(strpos($outputs["stderr"], 'Time limit exceeded') !== FALSE){
@@ -439,7 +414,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 		$commands = $code->setup_commands($code->commands, $tc["in"], $tc["out"], $tc["args"]);
 		// Run each command
 		foreach ($commands as $key => $command) {
-			$runner = (($key=="run")||(strpos($key, "time")===0));
+			$runner = (($key=="run")||(strpos($key, "time")===0)||($key=="invoke"));
 			if($mode==OPTI_MODE and $code->evaluator){
 		       $input=$prog;
 			   $input = trim(str_replace("\r", "", $input));//remove spaces
@@ -460,17 +435,14 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 				$outputs["run_time"]=$time/$n;
 			} elseif ($runner) {
 				$time=0;
-				//die(var_dump($command));
 				for ($i=0;$i<$n;$i++){
 					$outputs = run($code->path, $command, $input, $cpu_limit);
-					//die(var_dump($command));
 					$temp=strval($outputs['stdout']);
 					$outputs['stdout']=join("\n", array_slice(explode("\n",$outputs['stdout']), 0, -1));
 					$time+=getLastLines($temp);
 				}
 				$outputs["run_time"]=$time/$n;
 				if(strpos($outputs["stderr"], 'Error') !== FALSE || strpos($outputs["stderr"], "/usr/bin/python3: can't find '__main__' module in 'source.py'") !== FALSE){
-					//die(var_dump($outputs));
 					return array("status" => result_runtime, "oj_feedback" => "Run Time Error", "grade" => 0.0, "outputs" => array($outputs));
 				}
 				if(strpos($outputs["stderr"], 'Time limit exceeded') !== FALSE or strpos($outputs["stdout"], 'Time limit exceeded') !== FALSE){
@@ -710,12 +682,12 @@ function getLastLines($string, $n = 1) {
 
 function return_grade($callback, $markerid, $userid, $grade, $status, $oj_testcases, $oj_feedback,$type,$score=null){
 	//return_grade($callback, $markerid, $userid, $grade, $status, json_encode($outputs), $oj_feedback,$mode,$score);
-
+	
 	// Setup cURL
 	$data['customfeedback_token'] = settings::$auth_token['customfeedback_token'];
 	$data['markerid'] = $markerid;
 	$data['userid'] = $userid;
-	$data['grade'] = $grade;
+	$data['grade'] = 0.0;//we dont use it
 	$data['status'] = $status;
 	$data['oj_testcases'] = $oj_testcases;
 	$data['oj_feedback'] = $oj_feedback;
