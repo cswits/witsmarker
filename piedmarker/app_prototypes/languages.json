@@ -71,11 +71,14 @@
         "extension": "zip",
 	"compile" : {
             "unzip": "unzip ~sourcefile~",
-	    "move":"mv src/* ."
+	    "move":"mv src/* .",
+            "compile": "javac WitsTest.java"
+	},
+	"compile_tests" : {
+	    "compile": "WitsTest.class"
 	},
         "commands": {
-            "prepare":"javac WitsTest~input_noex~.java",
-            "run": "java -Djava.security.manager WitsTest~input_noex~"
+            "run": "java -Djava.security.manager WitsTest"
         }
     },
 "9": {
@@ -174,36 +177,8 @@
         "extension": "jar",
         "commands": {
             "prepare": "base64 ~sourcefile~ -w 0 > submit.in",
-            "submit": "curl -u admin:weshouldchangethis -X PUT --data-urlencode source@submit.in \"~snake_url~/~firstname~_~lastname~/~userid~/1/\" >out.txt 2>err.txt",
+            "submit": "curl -u admin:weshouldchangethis -X PUT --data-urlencode source@submit.in \"http://lamp.ms.wits.ac.za:8080/SnakeDBService/agents/0/~firstname~_~lastname~/~userid~/1/\" >out.txt 2>err.txt",
 	    "run": "echo 'true'"
-        }
-    },
-"16": {
-         "name":"pythonDocker",
-         "extension":"py.zip",
-         "compile" : {
-              "preparename" : "echo ",
-              "create_dir" : "mkdir -p student",
-              "rm" : "docker image rm ~userid~",
-	      "unzip" : "unzip ~sourcefile~ -d ./student",
-              "docker_build" : "docker build -t ~userid~ ."
-          },
-          "commands" : { 
-              "invoke" : "docker run --rm ~userid~ python3 ~input_noex~.py | tee docker_output_~input_noex~.txt",
-              "testit" : "touch randomfile6", 
-              "run" : "cat docker_output_~input_noex~.txt"
-          }
-},
-"17": {
-    "name": "PythonZip",
-    "extension": "py",
-    "compile" :{
-        "unzip": "unzip ~sourcefile~",
-        "movesource":"mv src/* ."
-    },
-	"compile_tests" : {},
-        "commands": {
-            "run": "python3 ~competitivePython~"
         }
     }
 }
