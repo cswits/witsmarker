@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Arg 1 - working directory
 cd $1
 # Arg 2 - program to run
@@ -6,19 +7,16 @@ cd $1
 # Connect stdout (&1) to stdout of program
 # Connect stderr (&2) to stderr of program
 # Run program in the background
-printf "\n" >out.txt 
-echo "$2" > marker_runscript.sh
-chmod +x marker_runscript.sh
-echo "timeout ${3}s /usr/bin/time -f \"%e\" -o out.txt ./marker_runscript.sh <&0 2>&2 > output.txt"
-timeout ${3}s /usr/bin/time -f "%e" -o out.txt ./marker_runscript.sh <&0 2>&2 > output.txt 
-cat out.txt>>output.txt 
-head -c -1 output.txt
-#bc <<< "scale=4;$sum/${4}">> output.txt
+
+#timeout ${3}s $2 <&0 2>&2 | tee output.txt >&1
+timeout ${3}s $2 <&0 2>&2 > output.txt
 i=$?
-#cat out.txt #>&1 # Workout $? returning the output code of tee
+cat output.txt >&1 # Workout $? returning the output code of tee
 if [ $i -eq 124 ]; then
 	echo "Time limit exceeded" >&2
 fi 
+
+
 
 
 #$2 <&0 >&1 2>&2 &

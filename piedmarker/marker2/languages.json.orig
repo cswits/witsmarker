@@ -71,11 +71,22 @@
         "extension": "zip",
 	"compile" : {
             "unzip": "unzip ~sourcefile~",
+<<<<<<< HEAD
 	    "move":"mv src/* ."
 	},
         "commands": {
             "prepare":"javac WitsTest~input_noex~.java",
             "run": "java -Djava.security.manager WitsTest~input_noex~"
+=======
+	    "move":"mv src/* .",
+            "compile": "javac WitsTest.java"
+	},
+	"compile_tests" : {
+	    "compile": "WitsTest.class"
+	},
+        "commands": {
+            "run": "java -Djava.security.manager WitsTest"
+>>>>>>> 63e6ecefd45650d6a52382232e1afecf015bb75b
         }
     },
 "9": {
@@ -174,7 +185,8 @@
         "extension": "jar",
         "commands": {
             "prepare": "base64 ~sourcefile~ -w 0 > submit.in",
-            "submit": "curl -u admin:weshouldchangethis -X PUT --data-urlencode source@submit.in \"~snake_url~/~firstname~_~lastname~/~userid~/1/\" >out.txt 2>err.txt",
+<<<<<<< HEAD
+            "submit": "curl -u admin:weshouldchangethis -X PUT --data-urlencode source@submit.in \"http://lamp.ms.wits.ac.za:8080/SnakeDBService/agents/0/~firstname~_~lastname~/~userid~/1/\" >out.txt 2>err.txt",
 	    "run": "echo 'true'"
         }
     },
@@ -193,7 +205,12 @@
               "testit" : "touch randomfile6", 
               "run" : "cat docker_output_~input_noex~.txt"
           }
-},
+}
+=======
+            "submit": "curl -u admin:weshouldchangethis -X PUT --data-urlencode source@submit.in \"~snake_url~/~firstname~_~lastname~/~userid~/1/\" >out.txt 2>err.txt",
+	    "run": "echo 'true'"
+        }
+    },
 "17": {
     "name": "PythonZip",
     "extension": "py",
@@ -206,5 +223,6 @@
             "run": "python3 ~competitivePython~"
         }
     }
+>>>>>>> 63e6ecefd45650d6a52382232e1afecf015bb75b
 }
 
