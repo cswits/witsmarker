@@ -174,7 +174,7 @@
         "extension": "jar",
         "commands": {
             "prepare": "base64 ~sourcefile~ -w 0 > submit.in",
-            "submit": "curl -u admin:weshouldchangethis -X PUT --data-urlencode source@submit.in \"http://snake1.ms.wits.ac.za:8080/SnakeDBService/agents/0/~firstname~_~lastname~/~userid~/1/\" >out.txt 2>err.txt",
+            "submit": "curl -u admin:weshouldchangethis -X PUT --data-urlencode source@submit.in \"http://lamp.ms.wits.ac.za:8080/SnakeDBService/agents/0/~firstname~_~lastname~/~userid~/1/\" >out.txt 2>err.txt",
 	    "run": "echo 'true'"
         }
     },
@@ -184,30 +184,15 @@
          "compile" : {
               "preparename" : "echo ",
               "create_dir" : "mkdir -p student",
-              "rm" : "docker image rm ~userid~",
 	      "unzip" : "unzip ~sourcefile~ -d ./student",
               "docker_build" : "docker build -t ~userid~ ."
           },
           "commands" : {
               "invoke" : "docker run --rm ~userid~ python3 ~input_noex~.py > docker_output_~input_noex~.txt",
+              "delete" : "docker image rm ~userid~",
               "testit" : "touch randomfile6", 
               "run" : "cat docker_output_~input_noex~.txt"
           }
-},
-    "17": {
-        "name": "ZippedMake",
-        "extension": "zip",
-	"compile" :{
-            "unzip": "unzip ~sourcefile~",
-            "compile": "make",
-            "chmod": "chmod +x ./a.out"
-	},
-	"compile_tests" : {
-	    "compile" : "./a.out"
-	},
-        "commands": {
-            "run": "./a.out ~args~"
-        }
-    }
+}
 }
 
