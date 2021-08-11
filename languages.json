@@ -9,14 +9,14 @@
     "2": {
         "name": "JavaZip",
         "extension": "zip",
-	"compile" :{
+        "compile": {
             "unzip": "unzip ~sourcefile~",
-	    "movesource":"mv src/* .",
+            "movesource": "mv src/* .",
             "compile": "javac -encoding UTF-8 *.java"
-	},
-	"compile_tests" : {
-	    "compile" : "./Program.class"
-	},
+        },
+        "compile_tests": {
+            "compile": "./Program.class"
+        },
         "commands": {
             "run": "java -Djava.security.manager Program"
         }
@@ -31,10 +31,10 @@
     "4": {
         "name": "Python",
         "extension": "py",
-	"compile" : {},
-	"compile_tests" : {},
+        "compile": {},
+        "compile_tests": {},
         "commands": {
-            "run": "python3 ~sourcefile~"
+            "run": "python3.6 ~sourcefile~"
         }
     },
     "5": {
@@ -69,23 +69,23 @@
     "8": {
         "name": "JavaZip_Custom",
         "extension": "zip",
-	"compile" : {
+        "compile": {
             "unzip": "unzip ~sourcefile~",
-	    "move":"mv src/* ."
-	},
+            "move": "mv src/* ."
+        },
         "commands": {
-            "prepare":"javac WitsTest~input_noex~.java",
-            "run": "java -Djava.security.manager WitsTest~input_noex~"
+            "prepare": "javac WitsTest~input_noex~.java",
+            "run": "java WitsTest~input_noex~"
         }
     },
-"9": {
+    "9": {
         "name": "Make",
         "extension": "cpp",
         "commands": {
-            "rm_imain" : "sed -i 's:int\\s*main\\s*(:int old_main(:g' ~sourcefile~",
-            "rm_vmain" : "sed -i 's:void\\s*main\\s*(:void old_main(:g' ~sourcefile~",
-	    "download" : "wget -O files.zip `cat ~input~ | head -1`",
-	    "unzip"    : "unzip files.zip",
+            "rm_imain": "sed -i 's:int\\s*main\\s*(:int old_main(:g' ~sourcefile~",
+            "rm_vmain": "sed -i 's:void\\s*main\\s*(:void old_main(:g' ~sourcefile~",
+            "download": "wget -O files.zip `cat ~input~ | head -1`",
+            "unzip": "unzip files.zip",
             "compile": "make",
             "run": "./a.out < ~input~"
         },
@@ -94,120 +94,127 @@
             "compile": "a.out"
         }
     },
-"11": {
+    "11": {
         "name": "C++11CustomMain",
         "extension": "cpp",
-        "compile" : {
-	},
-        "compile_tests" : {
-	},
+        "compile": {},
+        "compile_tests": {},
         "commands": {
-            "rm_imain" : "sed -i 's:int\\s*main\\s*(:int old_main(:g' ~sourcefile~",
-            "rm_vmain" : "sed -i 's:void\\s*main\\s*(:void old_main(:g' ~sourcefile~",
+            "rm_imain": "sed -i 's:int\\s*main\\s*(:int old_main(:g' ~sourcefile~",
+            "rm_vmain": "sed -i 's:void\\s*main\\s*(:void old_main(:g' ~sourcefile~",
             "concat": "cat ~sourcefile~ `echo` ~input~  > combined.cpp",
             "compile": "g++ -Wfatal-errors -std=c++11 -o combined combined.cpp -lm",
             "run": "./combined"
         },
         "tests": {}
     },
-"10": {
+    "10": {
         "name": "matlab",
         "extension": "m",
-        "compile" : {},
-        "compile_tests" : {},
+        "compile": {},
+        "compile_tests": {},
         "commands": {
-            "makeTester" : "printf \"clear;\\ncd ~path~\\noutfile = sprintf('outfile_~input_noex~.tmp');\\nfh = fopen(outfile, 'w');\\nstr = 'Time limit exceeded';\\nstr = evalc('~input_noex~()');\\nfprintf(fh, '%%s', str);\\nfclose(fh);\\n\" > tester.m",
-            "makeCaller" : "printf \"\\n\\n\" | cat - ~sourcefile~ >> ~input~",
+            "makeTester": "printf \"clear;\\ncd ~path~\\noutfile = sprintf('outfile_~input_noex~.tmp');\\nfh = fopen(outfile, 'w');\\nstr = 'Time limit exceeded';\\nstr = evalc('~input_noex~()');\\nfprintf(fh, '%%s', str);\\nfclose(fh);\\n\" > tester.m",
+            "makeCaller": "printf \"\\n\\n\" | cat - ~sourcefile~ >> ~input~",
             "matlabd": "~markers~/matlabd tester.m ~timeout~",
             "run": "cat outfile_~input_noex~.tmp"
         }
     },
-"13": {
+    "13": {
         "name": "matlabzip",
         "extension": "zip",
-        "compile" : {
+        "compile": {
             "unzip": "unzip ~sourcefile~",
-	    "limit": "touch ~markerid~",
-	    "t" : "touch timer-~timeout~"
-	},
-        "compile_tests" : {
-            "limit": "10"
+            "limit": "touch ~markerid~",
+            "t": "touch timer-~timeout~"
         },
         "commands": {
-            "makeTester" : "printf \"clear;\\ncd ~path~\\noutfile = sprintf('outfile_~input_noex~.tmp');\\nfh = fopen(outfile, 'w');\\nstr = 'Time limit exceeded';\\nstr = evalc('~input_noex~()');\\nfprintf(fh, '%%s', str);\\nfclose(fh);\\n\" > tester.m",
+            "makeTester": "printf \"clear;\\ncd ~path~\\noutfile = sprintf('outfile_~input_noex~.tmp');\\nfh = fopen(outfile, 'w');\\nstr = 'There is an error somewhere';\\nstr = evalc('~input_noex~()');\\nfprintf(fh, '%%s', str);\\nfclose(fh);\\n\" > tester.m",
             "matlabd": "~markers~/matlabd tester.m ~timeout~",
             "run": "cat outfile_~input_noex~.tmp"
         }
     },
-"12": {
+    "12": {
         "name": "C++11",
         "extension": "cpp",
-	"compile" : {
-	    "compile" : "g++ -Wfatal-errors -std=c++11 -o ~sourcefile_noex~.out ~sourcefile~ -lm"
-	},
-	"compile_tests" : {
-	    "compile" : "~sourcefile_noex~.out"
-	},
+        "compile": {
+            "compile": "g++ -Wfatal-errors -std=c++11 -o ~sourcefile_noex~.out ~sourcefile~ -lm"
+        },
+        "compile_tests": {
+            "compile": "~sourcefile_noex~.out"
+        },
         "commands": {
             "run": "./~sourcefile_noex~.out ~args~"
         }
     },
-"14": {
+    "14": {
         "name": "Catch++11",
         "extension": "cpp",
-	"compile" : {
-            "rm_exit" : "sed -i 's:^\\(.*;\\)*\\s*exit\\s*(.*)::g' ~sourcefile~",
-	    "compile" : "make"
-	},
-	"compile_tests" : {
-	    "compile" : "a.out"
-	},
+        "compile": {
+            "rm_exit": "sed -i 's:^\\(.*;\\)*\\s*exit\\s*(.*)::g' ~sourcefile~",
+            "compile": "make"
+        },
+        "compile_tests": {
+            "compile": "a.out"
+        },
         "commands": {
-            "makeTester" : "printf \"./a.out ~args~ >outfile_~input_noex~.txt\\necho \\$? \" > runner.sh",
-            "makeExec"   : "chmod +x ./runner.sh",
+            "makeTester": "printf \"./a.out ~args~ >outfile_~input_noex~.txt\\necho \\$? \" > runner.sh",
+            "makeExec": "chmod +x ./runner.sh",
             "run": "./runner.sh",
-	    "display" : "cat outfile_~input_noex~.txt"
+            "display": "cat outfile_~input_noex~.txt"
         }
     },
-"15": {
+    "15": {
         "name": "Snake",
         "extension": "jar",
         "commands": {
             "prepare": "base64 ~sourcefile~ -w 0 > submit.in",
             "submit": "curl -u admin:weshouldchangethis -X PUT --data-urlencode source@submit.in \"http://snake1.ms.wits.ac.za:8080/SnakeDBService/agents/0/~firstname~_~lastname~/~userid~/1/\" >out.txt 2>err.txt",
-	    "run": "echo 'true'"
+            "run": "echo 'true'"
         }
     },
-"16": {
-         "name":"pythonDocker",
-         "extension":"py.zip",
-         "compile" : {
-              "preparename" : "echo ",
-              "create_dir" : "mkdir -p student",
-              "rm" : "docker image rm ~userid~",
-	      "unzip" : "unzip ~sourcefile~ -d ./student",
-              "docker_build" : "docker build -t ~userid~ ."
-          },
-          "commands" : {
-              "invoke" : "docker run --rm ~userid~ python3 ~input_noex~.py > docker_output_~input_noex~.txt",
-              "testit" : "touch randomfile6", 
-              "run" : "cat docker_output_~input_noex~.txt"
-          }
-},
+    "16": {
+        "name": "pythonDocker",
+        "extension": "py.zip",
+        "compile": {
+            "preparename": "echo ",
+            "create_dir": "mkdir -p student",
+            "rm": "docker image rm ~userid~",
+            "unzip": "unzip ~sourcefile~ -d ./student",
+            "docker_build": "docker build -t ~userid~ ."
+        },
+        "commands": {
+            "invoke": "docker run --rm ~userid~ python3 ~input_noex~.py > docker_output_~input_noex~.txt",
+            "testit": "touch randomfile6",
+            "run": "cat docker_output_~input_noex~.txt"
+        }
+    },
     "17": {
         "name": "ZippedMake",
         "extension": "zip",
-	"compile" :{
+        "compile": {
             "unzip": "unzip ~sourcefile~",
             "compile": "make",
             "chmod": "chmod +x ./a.out"
-	},
-	"compile_tests" : {
-	    "compile" : "./a.out"
-	},
+        },
+        "compile_tests": {
+            "compile": "./a.out"
+        },
         "commands": {
             "run": "./a.out ~args~"
         }
+    },
+    "18": {
+        "name": "Graph",
+        "extension": "txt",
+        "compile": {
+            "compile": "javac -encoding UTF-8 Marker.java"
+        },
+        "compile_tests": {
+            "compile": "./Marker.class"
+        },
+        "commands": {
+            "run": "java Marker"
+        }
     }
 }
-

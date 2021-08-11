@@ -101,8 +101,9 @@ class program_file {
 	 * @param string $input Optional Input data to be written to file
 	 */
 
-	function program_file($lang, $sourcecode, $markerid, $timelimit, $sourcepath = "", $extra_path = "", $firstname = "", $lastname = "", $userid = "") {
+	function __construct($lang, $sourcecode, $markerid, $timelimit, $sourcepath = "", $extra_path = "", $firstname = "", $lastname = "", $userid = "") {
 		// Get filename extension from $lang
+		error_log("TESTING"); 
 		$this->extension = $lang['extension']; //TODO allow override from student file
 		// All files are called source
 		$this->filename = "source";
@@ -111,7 +112,7 @@ class program_file {
 		$this->markerid = $markerid;
 		$this->firstname = $firstname;
 		$this->lastname = $lastname;
-		$this->userid = $userid;
+		$this->userid = $userid; 
 
 		// Get the Submission ID
 		$this->id = date("Ymd-His-") . uniqid("", $more_entropy = true);
@@ -137,10 +138,21 @@ class program_file {
 			$exception = new Exception("Marker Error" . $success);
 			$exception->details = array(result_marker_error, -1, array("Marker Error: Unable to copy testcases."));
 			throw $exception;
+		} 
+		// setup commands 
+
+		if (array_key_exists("compile",$lang)){
+			$this->compile_commands = $lang['compile']; 
+		} else {
+			$this->compile_commands=[];
 		}
-		// setup commands
-		$this->compile_commands = $lang['compile'];
-		$this->compile_tests = $lang['compile_tests'];
+
+		if (array_key_exists("compile_tests",$lang)){
+			$this->compile_tests = $lang['compile_tests']; 
+		} else {
+			$this->compile_tests=[];
+		}
+		//
 		$this->commands = $lang['commands'];
 	}
 
@@ -197,7 +209,7 @@ $lastname = preg_replace('/\s+/', '', $this->lastname);
  * @param int $process PID of the process to kill
  * @return int exit code of the process
  */
-function killprocess($process) {
+function killprocess($process, $pipes) {
 	$status = proc_get_status($process);
 	if ($status['running'] == true) { //process ran too long, kill it
 		//close all pipes that are still open
@@ -289,7 +301,7 @@ function run($path, $program, $input, $limit = -1) {
 	if ($len>output_max_length)
 		$stderr = substr($stderr, 0, output_max_length);
 
-	$res = killprocess($process);
+	$res = killprocess($process,$pipes); 
 
 	return array('stdout' => $output, 'stderr' => $stderr, "result" => $res, "exec" => $execString);
 }
@@ -328,15 +340,14 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 
 	if(!isset($languages[$language])){
 		// TODO: Invalid Language Selection
-		error_log("Invalid Language");
+		error_log("Invalid Language"); 
 		$outputs = array("result" => result_marker_error, "oj_feedback" => "Marker Error: Invalid Language");
 		return array("status" => result_marker_error, "oj_feedback" => "Marker Error: Invalid Language", "grade" => -1.0, "outputs" => array($outputs) );
 	}
 	$lang = $languages[$language];
-
+ 
 	$prefix = $userid . "/";
 	$code = new program_file($lang, $sourcecode, $markerid, $cpu_limit, $tests["path"], $prefix, $firstname, $lastname, $userid);
-
 	$compile_commands = $code->setup_commands($code->compile_commands, "input", "output");
 	$compile_tests    = $code->setup_commands($code->compile_tests   , "input", "output");
 	foreach ($compile_commands as $key => $command) {
