@@ -12,6 +12,7 @@ $inputJSON =<<<JSN
 {"userid":"2","language":"12","cpu_limit":"0","mem_limit":"0","pe_ratio":"0","callback":"https:\\/\\/wits2.rklein.me\\/test\\/mod\\/assign\\/feedback\\/witsoj\\/insert_grade.php?id=93","testcase":{"url":"https:\\/\\/wits2.rklein.me\\/test\\/pluginfile.php\\/2803\\/assignfeedback_witsoj\\/oj_testcases\\/0\\/Lab1.zip","contenthash":"e19a18ceb11cb3fe28fbb8a230a90a4452d7b572","pathnamehash":"6c40566f5163045b60a9d3480da09973501bc53a"},"source":{"content":"VGVzdGluZzEyMwo=","ext":"txt"},"witsoj_token":"1e6947ac7fb3a9529a9726eb692c8cc5","markerid":"1"}
 JSN;
 */
+
 $inputJSON = file_get_contents('php://input');  // Get input from the client
 $input = json_decode($inputJSON, TRUE);        // Decode the JSON object
 

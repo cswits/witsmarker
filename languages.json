@@ -34,7 +34,7 @@
         "compile": {},
         "compile_tests": {},
         "commands": {
-            "run": "python3.6 ~sourcefile~"
+            "run": "python3 ~sourcefile~"
         }
     },
     "5": {
@@ -158,7 +158,7 @@
             "compile": "a.out"
         },
         "commands": {
-            "makeTester": "printf \"./a.out ~args~ >outfile_~input_noex~.txt\\necho \\$? \" > runner.sh",
+            "makeTester": "printf \"./a.out ~args~ >outfile_~input_noex~.txt 2>errfile_~input_noex~.txt\\necho \\$? \" > runner.sh",
             "makeExec": "chmod +x ./runner.sh",
             "run": "./runner.sh",
             "display": "cat outfile_~input_noex~.txt"
