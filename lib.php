@@ -516,7 +516,12 @@ function fetch_tests($testcases, $base_path){
 
 		// Send the request
 		curl_exec($ch);
-
+		if(curl_errno($ch)){
+			error_log(curl_error($ch));
+			fatal("Curl error: " . curl_error($ch));
+			return false;
+		}
+	
 		fclose($fileHandle);
 		// Check that we actually downloaded the file now
 		if(!file_exists($path_zip)){

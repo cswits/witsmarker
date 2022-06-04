@@ -169,7 +169,7 @@
         "extension": "jar",
         "commands": {
             "prepare": "base64 ~sourcefile~ -w 0 > submit.in",
-            "submit": "curl -u admin:weshouldchangethis -X PUT --data-urlencode source@submit.in \"http://snake1.ms.wits.ac.za:8080/SnakeDBService/agents/0/~firstname~_~lastname~/~userid~/1/\" >out.txt 2>err.txt",
+            "submit": "curl -u admin:weshouldchangethis -X PUT --data-urlencode source@submit.in \"http://snake.ms.wits.ac.za:8080/SnakeDBService/agents/0/~firstname~_~lastname~/~userid~/1/\" >out.txt 2>err.txt",
             "run": "echo 'true'"
         }
     },
@@ -215,6 +215,19 @@
         },
         "commands": {
             "run": "java Marker"
+        }
+    },
+    "19": {
+        "name": "ZippedConda",
+        "extension": "zip",
+        "compile": {
+            "unzip": "unzip ~sourcefile~"
+        },
+        "compile_tests": {
+            "compile": "./run.py"
+        },
+        "commands": {
+            "run": "~markers~/conda_runner.sh run.py ~args~"
         }
     }
 }
