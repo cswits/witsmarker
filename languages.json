@@ -229,5 +229,17 @@
         "commands": {
             "run": "~markers~/conda_runner.sh run.py ~args~"
         }
+    },
+    "20": {
+        "name": "Conda",
+        "extension": "py",
+        "compile": {
+        },
+        "compile_tests": {
+            "compile": "./run.py"
+        },
+        "commands": {
+            "run": "~markers~/conda_runner.sh run.py ~args~"
+        }
     }
 }
