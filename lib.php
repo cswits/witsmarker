@@ -179,8 +179,8 @@ class program_file {
 			$value = str_replace("~args~", $args, $value);
 			$value = str_replace("~timeout~", $this->timelimit, $value);
 			$value = str_replace("~markerid~", $this->markerid, $value);
-$firstname = preg_replace('/\s+/', '', $this->firstname);
-$lastname = preg_replace('/\s+/', '', $this->lastname);
+			$firstname = preg_replace('/\s+/', '', $this->firstname);
+			$lastname = preg_replace('/\s+/', '', $this->lastname);
 			$value = str_replace("~firstname~", $firstname, $value);
 			$value = str_replace("~lastname~", $lastname, $value);
 			$value = str_replace("~userid~", $this->userid, $value);
@@ -381,12 +381,20 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 		$outputs = null;
 		$timeout_problem = false;
 		$result = array();
-		$commands = $code->setup_commands($code->commands, $tc["in"], $tc["out"], $tc["args"]);
+		$tc_in = "";
+		if(isset($tc["in"])){
+			$tc_in = $tc["in"];
+		}
+		$commands = $code->setup_commands($code->commands, $tc_in, $tc["out"], $tc["args"]);
 		// Run each command
 		foreach ($commands as $key => $command) {
 			$runner = (($key=="run")||(strpos($key, "time")===0));
-			$input = file_get_contents($code->path . "/" . $tc["in"]);
-			$input = str_replace("\r", "", $input);
+			if(isset($tc["in"])){
+				$input = file_get_contents($code->path . "/" . $tc["in"]);
+				$input = str_replace("\r", "", $input);
+			}else{
+				$input = "";
+			}
 			if ($key == "display"){
 				$displayout = run($code->path, $command, $input);
 			} elseif ($runner) {
@@ -516,7 +524,12 @@ function fetch_tests($testcases, $base_path){
 
 		// Send the request
 		curl_exec($ch);
-
+		if(curl_errno($ch)){
+			error_log(curl_error($ch));
+			fatal("Curl error: " . curl_error($ch));
+			return false;
+		}
+	
 		fclose($fileHandle);
 		// Check that we actually downloaded the file now
 		if(!file_exists($path_zip)){
@@ -615,6 +628,10 @@ function return_grade($callback, $markerid, $userid, $grade, $status, $oj_testca
 	}
 
 	if($response != '{"status" : "0"}'){
+		//error_log($callback);
+		//$errorName = "/tmp/marker2/errorlog/".date("Y-m-d").".html";
+		//error_log($errorName);
+		//file_put_contents($errorName, $response);
 		error_log($response);
 		return false;
 	}
