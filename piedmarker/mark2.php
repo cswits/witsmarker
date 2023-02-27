@@ -25,6 +25,7 @@ $testcase = $input["testcase"]; // url, contenthash, pathnamehash
 $source = base64_decode($input["source"]["content"]);     // Decode the Base64
 settings::$temp .= "/$markerid";
 // Start buffering output
+error_log(settings::$temp);
 ob_start();
 // var_dump(settings::$temp);
 if(!isset($input["evaluator"]["content"]) and $type==1)die("{Evaluator source not provided}");

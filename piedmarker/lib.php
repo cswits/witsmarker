@@ -241,9 +241,9 @@ function run($path, $program, $input, $limit = -1) {
 	if ($limit == -1) {
 		$execString = "cd $path; $program";
 	} else { 
-		$execString = "cd $path; $program";    
+	//	$execString = "cd $path; $program";    
  
-	//	$execString = getcwd() . "/timeout_runner.sh '$path' '$program' $limit "; 
+		$execString = getcwd() . "/timeout_runner.sh '$path' '$program' $limit "; 
  
 	}
 	$process = proc_open($execString, $descriptorspec, $pipes);

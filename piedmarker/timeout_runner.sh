@@ -9,13 +9,14 @@ cd $1
 printf "\n" >out.txt 
 echo "$2" > marker_runscript.sh
 chmod +x marker_runscript.sh
-echo "timeout ${3}s /usr/bin/time -f \"%e\" -o out.txt ./marker_runscript.sh <&0 2>&2 > output.txt"
+# echo "timeout ${3}s /usr/bin/time -f \"%e\" -o out.txt ./marker_runscript.sh <&0 2>&2 > output.txt"
 timeout ${3}s /usr/bin/time -f "%e" -o out.txt ./marker_runscript.sh <&0 2>&2 > output.txt 
+i=$?
 cat out.txt>>output.txt 
 head -c -1 output.txt
 #bc <<< "scale=4;$sum/${4}">> output.txt
-i=$?
 #cat out.txt #>&1 # Workout $? returning the output code of tee
+
 if [ $i -eq 124 ]; then
 	echo "Time limit exceeded" >&2
 fi 

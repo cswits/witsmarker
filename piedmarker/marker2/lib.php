@@ -261,9 +261,9 @@ function run($path, $program, $input, $limit = -1) {
 	if ($limit == -1) {
 		$execString = "cd $path; $program";
 	} else {
-		$execString = "cd $path; $program";    
+		//$execString = "cd $path; $program";    
  
-	//	$execString = getcwd() . "/timeout_runner.sh '$path' '$program' $limit "; 
+		$execString = getcwd() . "/timeout_runner.sh '$path' '$program' $limit "; 
 
 	}
 	$process = proc_open($execString, $descriptorspec, $pipes);
@@ -310,6 +310,7 @@ function run($path, $program, $input, $limit = -1) {
 		$stderr = substr($stderr, 0, output_max_length);
 
 	$res = killprocess($process);
+	error_log($output);
 	return array('stdout' => $output, 'stderr' => $stderr, "result" => $res, "exec" => $execString);
 }
 
@@ -437,15 +438,19 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 					$time+=getLastLines($temp);
 				}
 				$outputs["run_time"]=$time/$n;
+				error_log("DISPLAY:".$outputs["run_time"]);
 			} elseif ($runner) {
 				$time=0;
 				for ($i=0;$i<$n;$i++){
 					$outputs = run($code->path, $command, $input, $cpu_limit);
 					$temp=strval($outputs['stdout']);
+					error_log("OUT1:".$outputs['stdout']);
 					$outputs['stdout']=join("\n", array_slice(explode("\n",$outputs['stdout']), 0, -1));
+					error_log("STDOUT:".$outputs['stdout']);
 					$time+=getLastLines($temp);
 				}
 				$outputs["run_time"]=$time/$n;
+				error_log("RUNNER:".$outputs["run_time"]);
 				if(strpos($outputs["stderr"], 'Error') !== FALSE || strpos($outputs["stderr"], "/usr/bin/python3: can't find '__main__' module in 'source.py'") !== FALSE){
 					return array("status" => result_runtime, "oj_feedback" => "Run Time Error", "grade" => 0.0, "outputs" => array($outputs));
 				}
@@ -462,6 +467,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 					$time+=getLastLines($temp);
 				}
 				$outputs["run_time"]=$time/$n;
+				error_log($outputs["run_time"]);
 				
 			}
 		}
@@ -696,8 +702,8 @@ function return_grade($callback, $markerid, $userid, $grade, $status, $oj_testca
 	$data['oj_testcases'] = $oj_testcases;
 	$data['oj_feedback'] = $oj_feedback;
 	if($type==FASTEST_MODE){
-	$data['score']=$data['time'];
-	$data['time']=averageTime($oj_testcases);
+		$data['time']=averageTime($oj_testcases);
+		$data['score']= $data['time'];
 	}
 	else if ($type==OPTI_MODE){
 	$data["score"]= $score;

@@ -54,12 +54,13 @@ $status = $student_marker_data["status"];
 $oj_feedback = $student_marker_data["oj_feedback"];
 $outputs = $student_marker_data["outputs"];
 $grade = $student_marker_data["grade"];
+error_log("#########2#####$grade");
 
 //evaluator!
 if($mode==OPTI_MODE){
 	$evaluate=TRUE;
 	$eval_code=base64_decode($input["evaluator"]["content"]);
-	$eval_lang = $input["eval_lang"];
+	$eval_lang = 4;
 	$eval_input=$student_marker_data["outputs"][0]['stdout'];
 	$studentCodeStatus=$student_marker_data["status"];
 	$evaluator_marker_data = mark($eval_code, $tests, $eval_lang, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, floatval($pe_ratio),$n,$evaluate,$eval_input,$mode,$studentCodeStatus);
