@@ -551,6 +551,10 @@ function fetch_tests($testcases, $base_path){
 	if ($res === TRUE) {
 		$zip->extractTo($path_folder);
 		$zip->close();
+		if(file_exists($path_folder."/makefile")){
+			error_log("MAKEFILE FOUND ATTEMPTING SETUP");
+			run($path_folder, "make tests.o", "", 10);
+		}
 	} else {
 		fatal('Unable to exctract test cases.');
 		return false;
