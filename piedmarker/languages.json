@@ -143,7 +143,7 @@
         "name": "C++11",
         "extension": "cpp",
 	"compile" : {
-	    "compile" : "g++ -Wfatal-errors -std=c++11 -o ~sourcefile_noex~.out ~sourcefile~ -lm"
+	    "compile" : "g++ -O3 -Wfatal-errors -std=c++11 -o ~sourcefile_noex~.out ~sourcefile~ -lm"
 	},
 	"compile_tests" : {
 	    "compile" : "~sourcefile_noex~.out"
