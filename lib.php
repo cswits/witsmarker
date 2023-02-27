@@ -628,6 +628,10 @@ function return_grade($callback, $markerid, $userid, $grade, $status, $oj_testca
 	}
 
 	if($response != '{"status" : "0"}'){
+		//error_log($callback);
+		//$errorName = "/tmp/marker2/errorlog/".date("Y-m-d").".html";
+		//error_log($errorName);
+		//file_put_contents($errorName, $response);
 		error_log($response);
 		return false;
 	}
