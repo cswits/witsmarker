@@ -1,0 +1,50 @@
+[?1h=[?25l[H[2J(B[mtop - 15:44:52 up 177 days, 23:42,  4 users,  load average: 0.05, 0.07, 0.08(B[m[39;49m(B[m[39;49m[K
+Tasks:(B[m[39;49m[1m 202 (B[m[39;49mtotal,(B[m[39;49m[1m   1 (B[m[39;49mrunning,(B[m[39;49m[1m 201 (B[m[39;49msleeping,(B[m[39;49m[1m   0 (B[m[39;49mstopped,(B[m[39;49m[1m   0 (B[m[39;49mzombie(B[m[39;49m(B[m[39;49m[K
+%Cpu(s):(B[m[39;49m[1m  3.4 (B[m[39;49mus,(B[m[39;49m[1m  0.0 (B[m[39;49msy,(B[m[39;49m[1m  0.0 (B[m[39;49mni,(B[m[39;49m[1m 96.5 (B[m[39;49mid,(B[m[39;49m[1m  0.1 (B[m[39;49mwa,(B[m[39;49m[1m  0.0 (B[m[39;49mhi,(B[m[39;49m[1m  0.0 (B[m[39;49msi,(B[m[39;49m[1m  0.0 (B[m[39;49mst(B[m[39;49m(B[m[39;49m[K
+KiB Mem :(B[m[39;49m[1m  8080480 (B[m[39;49mtotal,(B[m[39;49m[1m   600272 (B[m[39;49mfree,(B[m[39;49m[1m   718372 (B[m[39;49mused,(B[m[39;49m[1m  6761836 (B[m[39;49mbuff/cache(B[m[39;49m(B[m[39;49m[K
+KiB Swap:(B[m[39;49m[1m  8290300 (B[m[39;49mtotal,(B[m[39;49m[1m  7485052 (B[m[39;49mfree,(B[m[39;49m[1m   805248 (B[m[39;49mused.(B[m[39;49m[1m  6958052 (B[m[39;49mavail Mem (B[m[39;49m(B[m[39;49m[K
+[K
+[7m  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND                                                               (B[m[39;49m[K
+(B[m    1 root      20   0   37712   4932   3476 S   0.0  0.1  10:06.18 systemd                                                               (B[m[39;49m[K
+(B[m    2 root      20   0       0      0      0 S   0.0  0.0   0:01.93 kthreadd                                                              (B[m[39;49m[K
+(B[m    3 root      20   0       0      0      0 S   0.0  0.0   0:04.06 ksoftirqd/0                                                           (B[m[39;49m[K
+(B[m    5 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:0H                                                          (B[m[39;49m[K
+(B[m    7 root      20   0       0      0      0 S   0.0  0.0  23:32.40 rcu_sched                                                             (B[m[39;49m[K
+(B[m    8 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_bh                                                                (B[m[39;49m[K
+(B[m    9 root      rt   0       0      0      0 S   0.0  0.0   0:03.22 migration/0                                                           (B[m[39;49m[K
+(B[m   10 root      rt   0       0      0      0 S   0.0  0.0   0:35.09 watchdog/0                                                            (B[m[39;49m[K
+(B[m   11 root      rt   0       0      0      0 S   0.0  0.0   0:33.34 watchdog/1                                                            (B[m[39;49m[K
+(B[m   12 root      rt   0       0      0      0 S   0.0  0.0   0:02.24 migration/1                                                           (B[m[39;49m[K
+(B[m   13 root      20   0       0      0      0 S   0.0  0.0   0:03.01 ksoftirqd/1                                                           (B[m[39;49m[K
+(B[m   15 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/1:0H                                                          (B[m[39;49m[K
+(B[m   16 root      rt   0       0      0      0 S   0.0  0.0   0:31.39 watchdog/2                                                            (B[m[39;49m[K
+(B[m   17 root      rt   0       0      0      0 S   0.0  0.0   0:02.75 migration/2                                                           (B[m[39;49m[K
+(B[m   18 root      20   0       0      0      0 S   0.0  0.0   0:02.25 ksoftirqd/2                                                           (B[m[39;49m[K
+(B[m   20 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/2:0H                                                          (B[m[39;49m[K
+(B[m   21 root      rt   0       0      0      0 S   0.0  0.0   0:32.81 watchdog/3                                                            (B[m[39;49m[K
+(B[m   22 root      rt   0       0      0      0 S   0.0  0.0   0:02.37 migration/3                                                           (B[m[39;49m[K
+(B[m   23 root      20   0       0      0      0 S   0.0  0.0   0:02.79 ksoftirqd/3                                                           (B[m[39;49m[K
+(B[m   25 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/3:0H                                                          (B[m[39;49m[K
+(B[m   26 root      rt   0       0      0      0 S   0.0  0.0   0:31.21 watchdog/4                                                            (B[m[39;49m[K
+(B[m   27 root      rt   0       0      0      0 S   0.0  0.0   0:04.64 migration/4                                                           (B[m[39;49m[K
+(B[m   28 root      20   0       0      0      0 S   0.0  0.0   0:00.99 ksoftirqd/4                                                           (B[m[39;49m[K
+(B[m   30 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/4:0H                                                          (B[m[39;49m[K
+(B[m   31 root      rt   0       0      0      0 S   0.0  0.0   0:30.86 watchdog/5                                                            (B[m[39;49m[K
+(B[m   32 root      rt   0       0      0      0 S   0.0  0.0   0:02.65 migration/5                                                           (B[m[39;49m[K
+(B[m   33 root      20   0       0      0      0 S   0.0  0.0   0:01.47 ksoftirqd/5                                                           (B[m[39;49m[K
+(B[m   35 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/5:0H                                                          (B[m[39;49m[K
+(B[m   36 root      rt   0       0      0      0 S   0.0  0.0   0:31.24 watchdog/6                                                            (B[m[39;49m[K
+(B[m   37 root      rt   0       0      0      0 S   0.0  0.0   0:03.35 migration/6                                                           (B[m[39;49m[K
+(B[m   38 root      20   0       0      0      0 S   0.0  0.0   0:01.10 ksoftirqd/6                                                           (B[m[39;49m[K
+(B[m   40 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/6:0H                                                          (B[m[39;49m[K
+(B[m   41 root      rt   0       0      0      0 S   0.0  0.0   0:31.61 watchdog/7                                                            (B[m[39;49m[K
+(B[m   42 root      rt   0       0      0      0 S   0.0  0.0   0:02.28 migration/7                                                           (B[m[39;49m[K
+(B[m   43 root      20   0       0      0      0 S   0.0  0.0   0:04.30 ksoftirqd/7                                                           (B[m[39;49m[K
+(B[m   45 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/7:0H                                                          (B[m[39;49m[K
+(B[m   46 root      20   0       0      0      0 S   0.0  0.0   0:00.00 kdevtmpfs                                                             (B[m[39;49m[K
+(B[m   47 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 netns                                                                 (B[m[39;49m[K
+(B[m   48 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 perf                                                                  (B[m[39;49m[K
+(B[m   49 root      20   0       0      0      0 S   0.0  0.0   0:03.38 khungtaskd                                                            (B[m[39;49m[K
+(B[m   50 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 writeback                                                             (B[m[39;49m[K
+(B[m   51 root      25   5       0      0      0 S   0.0  0.0   0:00.00 ksmd                                                                  (B[m[39;49m[K
+(B[m   52 root      39  19       0      0      0 S   0.0  0.0   1:42.78 khugepaged                                                            (B[m[39;49m[K
