@@ -190,7 +190,7 @@
           },
           "commands" : { 
               "invoke" : "docker run --rm ~userid~ python3 ~input_noex~.py | tee docker_output_~input_noex~.txt",
-              "testit" : "touch randomfile6", 
+              "testit" : "touch randomfile99", 
               "run" : "cat docker_output_~input_noex~.txt"
           }
 }

@@ -186,11 +186,12 @@
               "create_dir" : "mkdir -p student",
               "rm" : "docker image rm ~userid~",
 	      "unzip" : "unzip ~sourcefile~ -d ./student",
-              "docker_build" : "docker build -t ~userid~ ."
+              "docker_build" : "docker build -t ~userid~ .",
+	      "docker_test" : "touch randomfile_dockerworked"
           },
           "commands" : { 
               "invoke" : "docker run --rm ~userid~ python3 ~input_noex~.py | tee docker_output_~input_noex~.txt",
-              "testit" : "touch randomfile6", 
+              "testit" : "touch randomfile88", 
               "run" : "cat docker_output_~input_noex~.txt"
           }
 },

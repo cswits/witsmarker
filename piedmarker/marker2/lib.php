@@ -261,9 +261,9 @@ function run($path, $program, $input, $limit = -1) {
 	if ($limit == -1) {
 		$execString = "cd $path; $program";
 	} else {
-		$execString = "cd $path; $program";    
+		//$execString = "cd $path; $program";    
  
-	//	$execString = getcwd() . "/timeout_runner.sh '$path' '$program' $limit "; 
+		$execString = getcwd() . "/timeout_runner.sh '$path' '$program' $limit "; 
 
 	}
 	$process = proc_open($execString, $descriptorspec, $pipes);
@@ -310,6 +310,7 @@ function run($path, $program, $input, $limit = -1) {
 		$stderr = substr($stderr, 0, output_max_length);
 
 	$res = killprocess($process);
+	error_log($output);
 	return array('stdout' => $output, 'stderr' => $stderr, "result" => $res, "exec" => $execString);
 }
 
@@ -349,16 +350,19 @@ function BadStatus($studentCodeStatus){
  */
 function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $markerid, $cpu_limit, $mem_limit, $pe_ratio, $n,$evaluator,$prog,$mode,$studentCodeStatus){
 	$string = file_get_contents("languages.json");
+	error_log("Enetering mark gunftion");
 	$languages = json_decode($string, true); // THIS IS NOT PARSING PROPERLY AT THE MOMENT?!
+	
 	foreach ($languages as $k => $v){
 		error_log("Comparing: " . $language . " and " . $v["name"] . " ($k)");
-		if($v["name"] == $language){
+		if ($language == $k){ // attempt to fix 20200425
+		// if($v["name"] == $language){ //20220425: surely this is wrong (SDJ)
 			$language = $k;
 			error_log("Using: " . $language);
 			break;
 		}
 	}
-
+        
 	if(!isset($languages[$language])){
 		// TODO: Invalid Language Selection
 		error_log("Invalid Language");
@@ -410,7 +414,9 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 	$max_grade = 0.0;
 	$status = null;
 //	die(json_encode($tests["yml"]["test_cases"]));
+	error_log("About to run the testcases");
 	foreach ($tests["yml"]["test_cases"] as $tc){
+		error_log($tc);
 		$outputs = null;
 		$timeout_problem = false;
 		$result = array();
@@ -437,15 +443,19 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 					$time+=getLastLines($temp);
 				}
 				$outputs["run_time"]=$time/$n;
+				error_log("DISPLAY:".$outputs["run_time"]);
 			} elseif ($runner) {
 				$time=0;
 				for ($i=0;$i<$n;$i++){
 					$outputs = run($code->path, $command, $input, $cpu_limit);
 					$temp=strval($outputs['stdout']);
+					error_log("OUT1:".$outputs['stdout']);
 					$outputs['stdout']=join("\n", array_slice(explode("\n",$outputs['stdout']), 0, -1));
+					error_log("STDOUT:".$outputs['stdout']);
 					$time+=getLastLines($temp);
 				}
 				$outputs["run_time"]=$time/$n;
+				error_log("RUNNER:".$outputs["run_time"]);
 				if(strpos($outputs["stderr"], 'Error') !== FALSE || strpos($outputs["stderr"], "/usr/bin/python3: can't find '__main__' module in 'source.py'") !== FALSE){
 					return array("status" => result_runtime, "oj_feedback" => "Run Time Error", "grade" => 0.0, "outputs" => array($outputs));
 				}
@@ -462,6 +472,7 @@ function mark($sourcecode, $tests, $language, $userid, $firstname, $lastname, $m
 					$time+=getLastLines($temp);
 				}
 				$outputs["run_time"]=$time/$n;
+				error_log($outputs["run_time"]);
 				
 			}
 		}
@@ -696,8 +707,8 @@ function return_grade($callback, $markerid, $userid, $grade, $status, $oj_testca
 	$data['oj_testcases'] = $oj_testcases;
 	$data['oj_feedback'] = $oj_feedback;
 	if($type==FASTEST_MODE){
-	$data['score']=$data['time'];
-	$data['time']=averageTime($oj_testcases);
+		$data['time']=averageTime($oj_testcases);
+		$data['score']= $data['time'];
 	}
 	else if ($type==OPTI_MODE){
 	$data["score"]= $score;
